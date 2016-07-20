@@ -2,8 +2,8 @@
   (:require [clojure.math.numeric-tower :as math]))
 
 (defn create-board
-  []
-  (vec (repeat 9 nil)))
+  [size]
+  (vec (repeat size nil)))
 
 (defn cell-empty?
   [board cell]
@@ -49,6 +49,18 @@
        true
        (recur board marker (+ index length))))))
 
+(defn get-column-cells
+  ([board length]
+   (get-column-cells board length 0 []))
+  ([board length index cells]
+   (loop [board board
+          length length
+          index index
+          cells cells]
+     (if (= (count cells) length)
+       cells
+       (recur board length (+ index length) (cons (get board index) cells))))))
+
 (defn vertically-filled?
   ([board marker]
    (vertically-filled? board marker 0))
@@ -57,30 +69,46 @@
           marker marker
           length (row-num board)]
      (when (< index length)
-       (let [first-cell  (get board index)
-             second-cell (get board (+ index length))
-             third-cell  (get board (+ index (* length 2)))]
-         (if (filled-with-marker? (vec [first-cell second-cell third-cell]) marker)
-           true
-           (recur board marker (inc index))))))))
+       (if (filled-with-marker? (get-column-cells board length) marker)
+         true
+         (recur board marker (inc index)))))))
+
+(defn get-forward-diagonal-cells
+  ([board length]
+   (get-forward-diagonal-cells board length (- length 1) []))
+  ([board length index cells]
+   (loop [board board
+          length length
+          index index
+          cells cells]
+     (if (= (count cells) length)
+       cells
+       (recur board length (+ index (- length 1)) (cons (get board index) cells))))))
 
 (defn forward-diagonal-filled?
   [board marker]
-  (let [length (row-num board)
-        index (- length 1)
-        first-cell  (get board index)
-        second-cell (get board (* index 2))
-        third-cell  (get board (* index 3))]
-    (if (filled-with-marker? (vec [first-cell second-cell third-cell]) marker)
+  (let [board board
+        length (row-num board)]
+    (if (filled-with-marker? (get-forward-diagonal-cells board length) marker)
       true
       false)))
 
+(defn get-backward-diagonal-cells
+  ([board length]
+   (get-backward-diagonal-cells board length 0 []))
+  ([board length index cells]
+   (loop [board board
+          length length
+          index index
+          cells cells]
+     (if (= (count cells) length)
+       cells
+       (recur board length (+ index length 1) (cons (get board index) cells))))))
+
 (defn backward-diagonal-filled?
   [board marker]
-  (let [index 0
-        first-cell  (get board index)
-        second-cell (get board (+ index 4))
-        third-cell  (get board (+ index 8))]
-    (if (filled-with-marker? (vec [first-cell second-cell third-cell]) marker)
+  (let [board board
+        length (row-num board)]
+    (if (filled-with-marker? (get-backward-diagonal-cells board length) marker)
       true
       false)))
