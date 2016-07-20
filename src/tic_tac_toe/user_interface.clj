@@ -12,13 +12,12 @@
 
 (defn valid-size?
   [input]
-  (if (> input 2)
-    true
-    false))
+  (> input 2))
 
 (defn prompt-for-size
   ([]
    (prompt-for-size "Enter a board size:"))
+
   ([message]
    (let [size (Integer/parseInt (prompt message))]
      (if (valid-size? size)
@@ -27,13 +26,12 @@
 
 (defn valid-move?
   [input length]
-  (if (and (> input 0) (< input length))
-    true
-    false))
+  (and (> input 0) (< input length)))
 
 (defn prompt-for-move
   ([]
-   (prompt-for-move "Enter your move:" 9))
+   (prompt-for-move "Enter your move:"))
+
   ([message length]
    (let [move (Integer/parseInt (prompt message))
          length length]
