@@ -29,10 +29,11 @@
   (and (> input 0) (< input length)))
 
 (defn prompt-for-move
-  ([]
-   (prompt-for-move "Enter your move:"))
+  ([board]
+   (let [length (board/get-length board)]
+     (prompt-for-move length "Enter your move:")))
 
-  ([message length]
+  ([length message]
    (let [move (Integer/parseInt (prompt message))
          length length]
      (if (valid-move? move length)

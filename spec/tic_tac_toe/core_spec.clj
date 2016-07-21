@@ -3,11 +3,13 @@
             [tic-tac-toe.core :refer :all]))
 
 (describe "tic-tac-toe board"
+
           (before-all
             (def board (create-board 9))
             (def size 3)
             (def x-marker "X")
             (def o-marker "O")
+            (def small-board (vec [nil nil nil nil]))
             (def partial-board (vec [nil nil nil
                                      nil nil nil
                                      "X" "O" "X"]))
@@ -47,7 +49,7 @@
                         (should= false (board-filled? board))))
 
           (describe "get-empty-cells"
-                     (it "returns a vector of empty cell numbers"
+                    (it "returns a vector of empty cell numbers"
                         (should= [0 1 2 3 4 5] (get-empty-cells partial-board)))
 
                     (it "returns empty vector if there are no empty cells"
@@ -79,13 +81,19 @@
                         (let [cells ["X" "O" "X"]]
                           (should= false (filled-with-marker? cells x-marker)))))
 
+          (describe "get-length"
+                    (it "returns 9 as the length for a 3x3 board"
+                        (should= 9 (get-length board)))
+
+                    (it "returns 4 as the length for a 4x4 board"
+                        (should= 4 (get-length small-board))))
+
           (describe "get-size"
                     (it "returns 3 as the square root of a board with a length of 9"
                         (should= 3 (get-size board)))
 
                     (it "returns 2 as the square root of a board with a length of 4"
-                        (let [small-board [nil nil nil nil]]
-                          (should= 2 (get-size small-board)))))
+                        (should= 2 (get-size small-board))))
 
           (describe "any-row-filled?"
                     (it "returns true if horizontally adajcent cells are filled with the same marker"
@@ -97,7 +105,7 @@
           (describe "get-column-cells"
                     (it "returns a vector of same-valued cells of a specified single column"
                         (let [index 0]
-                        (should= ["X" "X" "X"] (get-column-cells vertical-board size index))))
+                          (should= ["X" "X" "X"] (get-column-cells vertical-board size index))))
 
                     (it "returns a vector of different-valued cells of a specified single column"
                         (let [index 2]
@@ -105,10 +113,10 @@
 
           (describe "any-column-filled?"
                     (it "returns true if vertically adjacent cells are filled with the same marker"
-                        (should= true (any-column-filled? vertical-board x-marker))))
+                        (should= true (any-column-filled? vertical-board x-marker)))
 
-                    ;; (it "returns false if vertically adjacent cells are not filled with the same marker"
-                    ;;     (should= false (any-column-filled? full-board o-marker))))
+                    (it "returns false if vertically adjacent cells are not filled with the same marker"
+                        (should= false (any-column-filled? full-board o-marker))))
 
           (describe "get-forward-diagonal-cells"
                     (it "returns a vector of cells belonging to a board's forward diagonal"
@@ -130,4 +138,14 @@
                         (should= true (backward-diagonal-filled? backward-diagonal-board x-marker)))
 
                     (it "returns false if backward diagonal cells are not filled with the same marker"
-                        (should= false (backward-diagonal-filled? full-board x-marker)))))
+                        (should= false (backward-diagonal-filled? full-board x-marker))))
+
+          (describe "either-diagonal-filled?"
+                    (it "returns true if a forward diagonal is filled"
+                        (should= true (either-diagonal-filled? forward-diagonal-board o-marker)))
+
+                    (it "returns true if a backward diagonal is filled"
+                        (should= true (either-diagonal-filled? backward-diagonal-board x-marker)))
+
+                    (it "returns false if neither diagonal is filled"
+                        (should= false (either-diagonal-filled? full-board o-marker)))))

@@ -34,9 +34,13 @@
     (fn [acc cell]
       (and acc (= marker cell))) true cells))
 
+(defn get-length
+  [board]
+  (count board))
+
 (defn get-size
   [board]
-  (math/sqrt (count board)))
+  (math/sqrt (get-length board)))
 
 (defn any-row-filled?
   ([board marker]
@@ -57,7 +61,7 @@
 (defn get-column-cells
   ([board size index]
    (let [cells []]
-   (get-column-cells board size index cells)))
+     (get-column-cells board size index cells)))
 
   ([board size index cells]
    (loop [board board
@@ -70,16 +74,19 @@
 
 (defn any-column-filled?
   ([board marker]
-   (any-column-filled? board marker 0))
+   (let [index 0
+         size (get-size board)]
+     (any-column-filled? board marker index size)))
 
-  ([board marker index]
+  ([board marker index size]
    (loop [board board
           marker marker
-          size (get-size board)]
+          index index
+          size size]
      (if (> index size)
        false
        (or (filled-with-marker? (get-column-cells board size index) marker)
-           (recur board marker (inc index)))))))
+           (recur board marker (inc index) size))))))
 
 (defn get-forward-diagonal-cells
   ([board size]
@@ -118,3 +125,8 @@
   (let [board board
         size (get-size board)]
     (filled-with-marker? (get-backward-diagonal-cells board size) marker)))
+
+(defn either-diagonal-filled?
+  [board marker]
+  (or (forward-diagonal-filled? board marker)
+      (backward-diagonal-filled? board marker)))
