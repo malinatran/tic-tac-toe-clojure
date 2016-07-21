@@ -1,5 +1,5 @@
 (ns tic-tac-toe.game
-  (:require [tic-tac-toe.core :as board]))
+  (:require [tic-tac-toe.board :as board]))
 
 (defn winner?
   [board marker]

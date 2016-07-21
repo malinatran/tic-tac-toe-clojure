@@ -1,5 +1,4 @@
-(ns tic-tac-toe.core
-  (:require [clojure.math.numeric-tower :as math]))
+(ns tic-tac-toe.board)
 
 (defn create-board
   [size]
@@ -40,7 +39,7 @@
 
 (defn get-size
   [board]
-  (math/sqrt (get-length board)))
+  (int (java.lang.Math/sqrt (get-length board))))
 
 (defn any-row-filled?
   ([board marker]

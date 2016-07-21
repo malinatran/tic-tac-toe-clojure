@@ -1,5 +1,5 @@
 (ns tic-tac-toe.user-interface
-  (:require [tic-tac-toe.core :as board]))
+  (:require [tic-tac-toe.board :as board]))
 
 (defn prompt
   [message]
@@ -8,7 +8,7 @@
 
 (defn welcome-message
   []
-  (prompt "Welcome to tic-tac-toe!"))
+  (println "Welcome to tic-tac-toe!"))
 
 (defn valid-size?
   [input]
@@ -38,8 +38,12 @@
          length length]
      (if (valid-move? move length)
        move
-       (recur message length)))))
+       (recur length message)))))
 
 (defn print-board
   [size]
-  (vec (range 1 (+ size 1))))
+  (println (vec (range 1 (+ size 1)))))
+
+(defn print-outcome
+  [result]
+  (println (str result " wins!")))

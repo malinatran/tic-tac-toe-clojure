@@ -1,7 +1,7 @@
 (ns tic-tac-toe.user-interface-spec
   (:require [speclj.core :refer :all]
             [tic-tac-toe.user-interface :refer :all]
-            [tic-tac-toe.core :as board]))
+            [tic-tac-toe.board :as board]))
 
 (describe "user interface console"
 
@@ -9,6 +9,7 @@
                   (with-out-str (it)))
 
           (before-all
+            (def x-marker "X")
             (def board (board/create-board 9))
             (def length (board/get-length board)))
 
@@ -26,8 +27,7 @@
           (describe "welcome-message"
                     (it "prints welcome message"
                         (should= "Welcome to tic-tac-toe!\n"
-                                 (with-out-str (with-in-str ""
-                                                 (prompt "Welcome to tic-tac-toe!"))))))
+                                 (with-out-str (welcome-message)))))
 
           (describe "valid-size?"
                     (it "returns true if user entered a valid board size of 5"
@@ -58,17 +58,23 @@
                     (it "returns move if move provided by user input is valid"
                         (should= 7
                                  (with-in-str "7"
-                                   (prompt-for-move board)))))
+                                   (prompt-for-move board))))
 
-          ;; (it "recursively calls function and prompts for move if move provided by user input is invalid"
-          ;;     (should= 3
-          ;;              (with-in-str "15\n10\n3"
-          ;;                (prompt-for-move board)))))
+                    (it "recursively calls function and prompts for size if size provided by user input is invalid"
+                        (should= 7
+                                 (with-in-str "14\n7"
+                                   (prompt-for-move board)))))
 
           (describe "print-board"
                     (it "displays the board's grid"
                         (let [board [1 2 3
                                      4 5 6
                                      7 8 9]]
-                          (should= board (print-board 9))))))
+                          (should= (str board "\n") (with-out-str (print-board 9))))))
 
+          (describe "print-outcome"
+                    (it "displays marker of winner if there is a win"
+                        (should= "X wins!\n" (with-out-str (print-outcome x-marker))))
+
+                    (it "displays a message that nobody won if there isn't a win"
+                        (should= "Nobody wins!\n" (with-out-str (print-outcome "Nobody"))))))

@@ -1,7 +1,6 @@
 (ns tic-tac-toe.game-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.game :refer :all]
-            [tic-tac-toe.core :as board]))
+            [tic-tac-toe.game :refer :all]))
 
 (describe "tic-tac-toe game"
 
