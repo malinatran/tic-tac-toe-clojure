@@ -72,15 +72,6 @@
                           (should= ["X" "O" "X" nil "X" "X" "O" "X" "O"]
                                    (clear-cell full-board cell)))))
 
-          (describe "filled-with-marker?"
-                    (it "returns true if set of cells is filled with same marker"
-                        (let [cells ["X" "X" "X"]]
-                          (should= true (filled-with-marker? cells x-marker))))
-
-                    (it "returns false if set of cells is not filled with same marker"
-                        (let [cells ["X" "O" "X"]]
-                          (should= false (filled-with-marker? cells x-marker)))))
-
           (describe "get-length"
                     (it "returns 9 as the length for a 3x3 board"
                         (should= 9 (get-length board)))
@@ -95,6 +86,20 @@
                     (it "returns 2 as the square root of a board with a length of 4"
                         (should= 2 (get-size small-board))))
 
+          (describe "filled-with-marker?"
+                              (it "returns true if set of cells is filled with same marker"
+                                  (let [cells ["X" "X" "X"]]
+                                    (should= true (filled-with-marker? cells x-marker))))
+
+                              (it "returns false if set of cells is not filled with same marker"
+                                  (let [cells ["X" "O" "X"]]
+                                    (should= false (filled-with-marker? cells x-marker)))))
+
+          (describe "get-rows"
+                    (it "returns a collection of collection representing rows"
+                        (should= [["X" "O" "X"]["O" "X" "X"]["O" "X" "O"]]
+                                 (get-rows full-board size))))
+
           (describe "any-row-filled?"
                     (it "returns true if horizontally adajcent cells are filled with the same marker"
                         (should= true (any-row-filled? horizontal-board o-marker)))
@@ -102,50 +107,29 @@
                     (it "returns false if horizontally adjacent cells are not filled with the same marker"
                         (should= false (any-row-filled? full-board o-marker))))
 
-          (describe "get-column-cells"
-                    (it "returns a vector of same-valued cells of a specified single column"
-                        (let [index 0]
-                          (should= ["X" "X" "X"] (get-column-cells vertical-board size index))))
+          (describe "get-columns"
+                    (it "returns a collection of collection representing columns"
+                        (should= [["X" "X" "X"][nil nil nil][nil nil nil]]
+                                  (get-columns vertical-board size))))
 
-                    (it "returns a vector of different-valued cells of a specified single column"
-                        (let [index 2]
-                          (should= ["O" "X" "X"] (get-column-cells full-board size index)))))
-
-          (describe "any-column-filled?"
-                    (it "returns true if vertically adjacent cells are filled with the same marker"
+           (describe "any-column-filled?"
+                      (it "returns true if vertically adjacent cells are filled with the same marker"
                         (should= true (any-column-filled? vertical-board x-marker)))
 
                     (it "returns false if vertically adjacent cells are not filled with the same marker"
                         (should= false (any-column-filled? full-board o-marker))))
 
-          (describe "get-forward-diagonal-cells"
-                    (it "returns a vector of cells belonging to a board's forward diagonal"
-                        (should= ["O" "O" "O"] (get-forward-diagonal-cells forward-diagonal-board size))))
+          (describe "get-diagonals"
+                    (it "returns a vector of cells representing a board's backward diagonal"
+                        (should= [[nil "X" nil]["X" "X" "X"]]
+                                 (get-diagonals backward-diagonal-board size))))
 
-          (describe "forward-diagonal-filled?"
-                    (it "returns true if forward diagonal cells are filled with the same marker"
-                        (should= true (forward-diagonal-filled? forward-diagonal-board o-marker)))
-
-                    (it "returns false if forward diagonal cells are filled with the same marker"
-                        (should= false (forward-diagonal-filled? full-board o-marker))))
-
-          (describe "get-backward-diagonal-cells"
-                    (it "returns a vector of cells belonging to a board's backward diagonal"
-                        (should= ["X" "X" "X"] (get-backward-diagonal-cells backward-diagonal-board size))))
-
-          (describe "backward-diagonal-filled?"
-                    (it "returns true if backward diagonal cells are filled with the same marker"
-                        (should= true (backward-diagonal-filled? backward-diagonal-board x-marker)))
-
-                    (it "returns false if backward diagonal cells are not filled with the same marker"
-                        (should= false (backward-diagonal-filled? full-board x-marker))))
-
-          (describe "either-diagonal-filled?"
+          (describe "any-diagonal-filled?"
                     (it "returns true if a forward diagonal is filled"
-                        (should= true (either-diagonal-filled? forward-diagonal-board o-marker)))
+                        (should= true (any-diagonal-filled? forward-diagonal-board o-marker)))
 
                     (it "returns true if a backward diagonal is filled"
-                        (should= true (either-diagonal-filled? backward-diagonal-board x-marker)))
+                        (should= true (any-diagonal-filled? backward-diagonal-board x-marker)))
 
                     (it "returns false if neither diagonal is filled"
-                        (should= false (either-diagonal-filled? full-board o-marker)))))
+                        (should= false (any-diagonal-filled? full-board o-marker)))))

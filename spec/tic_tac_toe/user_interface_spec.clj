@@ -65,6 +65,10 @@
                                  (with-in-str "14\n7"
                                    (prompt-for-move board)))))
 
+          (describe "translate-move"
+                    (it "translates move input by user to corresponding board cell"
+                        (should= 8 (translate-move 9))))
+
           (describe "print-board"
                     (it "displays the board's grid"
                         (let [board [1 2 3

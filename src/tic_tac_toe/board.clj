@@ -27,12 +27,6 @@
   [board cell]
   (assoc board cell nil))
 
-(defn filled-with-marker?
-  [cells marker]
-  (reduce
-    (fn [acc cell]
-      (and acc (= marker cell))) true cells))
-
 (defn get-length
   [board]
   (count board))
@@ -41,91 +35,55 @@
   [board]
   (int (java.lang.Math/sqrt (get-length board))))
 
+(defn filled-with-marker?
+  [cells marker]
+  (reduce
+    (fn [acc cell]
+      (and acc (= marker cell))) true cells))
+
+(defn get-rows
+  [board size]
+  (vec (partition size board)))
+
 (defn any-row-filled?
-  ([board marker]
-   (let [index 0
-         counter 0]
-     (any-row-filled? board marker index counter)))
+  [board marker]
+  (let [size (get-size board)
+        rows (get-rows board size)]
+    (boolean (some #(filled-with-marker? % marker) rows))))
 
-  ([board marker index counter]
-   (loop [board board
-          marker marker
-          size (get-size board)
-          counter counter]
-     (if (> counter size)
-       false
-       (or (filled-with-marker? (subvec board index (+ index size)) marker)
-           (recur board marker (+ index size) (inc counter)))))))
-
-(defn get-column-cells
-  ([board size index]
-   (let [cells []]
-     (get-column-cells board size index cells)))
-
-  ([board size index cells]
-   (loop [board board
-          size size
-          index index
-          cells cells]
-     (if (= (count cells) size)
-       cells
-       (recur board size (+ index size) (cons (get board index) cells))))))
+(defn get-columns
+  [board size]
+  (let [rows (get-rows board size)]
+    (apply map vector rows)))
 
 (defn any-column-filled?
-  ([board marker]
-   (let [index 0
-         size (get-size board)]
-     (any-column-filled? board marker index size)))
-
-  ([board marker index size]
-   (loop [board board
-          marker marker
-          index index
-          size size]
-     (if (> index size)
-       false
-       (or (filled-with-marker? (get-column-cells board size index) marker)
-           (recur board marker (inc index) size))))))
-
-(defn get-forward-diagonal-cells
-  ([board size]
-   (get-forward-diagonal-cells board size (- size 1) []))
-
-  ([board size index cells]
-   (loop [board board
-          size size
-          index index
-          cells cells]
-     (if (= (count cells) size)
-       cells
-       (recur board size (+ index (- size 1)) (cons (get board index) cells))))))
-
-(defn forward-diagonal-filled?
   [board marker]
-  (let [board board
-        size (get-size board)]
-    (filled-with-marker? (get-forward-diagonal-cells board size) marker)))
+  (let [size (get-size board)
+        columns (get-columns board size)]
+    (boolean (some #(filled-with-marker? % marker) columns))))
 
-(defn get-backward-diagonal-cells
-  ([board size]
-   (get-backward-diagonal-cells board size 0 []))
+(defn get-diagonals
+  [board size]
+  (let [length (get-length board)
+        backward-inc (+ size 1)
+        forward-inc (- size 1)
+        cell-indexes (vec (range length))
+        forward-diagonal (filter (fn [index]
+                                   (and
+                                     (not (= index 0))
+                                     (not (= index (- length 1)))
+                                     (= (mod index forward-inc) 0))) cell-indexes)
+        backward-diagonal (filter (fn [index]
+                                    (= (mod index backward-inc) 0)) cell-indexes)
+        diagonal-indexes (vector forward-diagonal backward-diagonal)]
 
-  ([board size index cells]
-   (loop [board board
-          size size
-          index index
-          cells cells]
-     (if (= (count cells) size)
-       cells
-       (recur board size (+ index size 1) (cons (get board index) cells))))))
+    (map (fn [diagonal]
+           (map (fn [index]
+                       (nth board index)) diagonal))
+           diagonal-indexes)))
 
-(defn backward-diagonal-filled?
+(defn any-diagonal-filled?
   [board marker]
-  (let [board board
-        size (get-size board)]
-    (filled-with-marker? (get-backward-diagonal-cells board size) marker)))
-
-(defn either-diagonal-filled?
-  [board marker]
-  (or (forward-diagonal-filled? board marker)
-      (backward-diagonal-filled? board marker)))
+  (let [size (get-size board)
+        diagonals (get-diagonals board size)]
+    (boolean (some #(filled-with-marker? % marker) diagonals))))

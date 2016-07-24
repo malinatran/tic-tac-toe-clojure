@@ -40,6 +40,10 @@
        move
        (recur length message)))))
 
+(defn translate-move
+  [move]
+  (- move 1))
+
 (defn print-board
   [size]
   (println (vec (range 1 (+ size 1)))))
