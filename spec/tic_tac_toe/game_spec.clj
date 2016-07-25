@@ -6,8 +6,9 @@
 
           (before-all
             (def x-marker "X")
+            (def m-marker "M")
             (def o-marker "O")
-            (def markers ["X" "O"])
+            (def markers ["X" "M" "O"])
             (def partial-board (vec [nil nil "X"
                                      "O" "O" nil
                                      nil nil nil]))
@@ -17,10 +18,6 @@
             (def tie-board (vec ["X" "O" "X"
                                  "X" "X" "O"
                                  "O" "X" "O"])))
-
-          (describe "get-all-markers"
-                    (it "returns all the players' markers in a vector"
-                        (should= markers (get-all-markers winning-board))))
 
           (describe "winner?"
                     (it "returns true if marker is a winner"
@@ -49,6 +46,16 @@
                     (it "returns false if there is not a win or draw"
                         (should= false (game-over? partial-board))))
 
+
           (describe "switch-player"
-                    (it "returns the next player"
-                        (should= x-marker (switch-player o-marker)))))
+                    (it "returns the other player in a collection of two players (and there is only one arg)"
+                        (should= x-marker (switch-player o-marker)))
+
+                    (it "returns the last player of a collection if current player is the first player"
+                        (should= o-marker (switch-player x-marker markers)))
+
+                    (it "returns the first player of a collection if current player is the middle-most player"
+                        (should= x-marker (switch-player m-marker markers)))
+
+                    (it "returns the player of a previous index in a collection"
+                        (should= m-marker (switch-player o-marker markers)))))

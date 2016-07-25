@@ -29,13 +29,6 @@
                         (should= "Welcome to tic-tac-toe!\n"
                                  (with-out-str (welcome-message)))))
 
-          (describe "valid-size?"
-                    (it "returns true if user entered a valid board size of 5"
-                        (should= true (valid-size? 5)))
-
-                    (it "returns false if user entered an invalid board size less than 3"
-                        (should= false (valid-size? 2))))
-
           (describe "prompt-for-size"
                     (it "returns size if size provided by user input is valid"
                         (should= 3
@@ -46,24 +39,6 @@
                         (should= 4
                                  (with-in-str "0\n1\n2\n4"
                                    (prompt-for-size)))))
-
-          (describe "valid-move?"
-                    (it "returns true if user entered a valid move of 3 for a 3x3 board"
-                        (should= true (valid-move? 3 length)))
-
-                    (it "returns false if user entered an invalid move that does not exist on a 3x3 board"
-                        (should= false (valid-move? 10 length))))
-
-          (describe "prompt-for-move"
-                    (it "returns move if move provided by user input is valid"
-                        (should= 7
-                                 (with-in-str "7"
-                                   (prompt-for-move board))))
-
-                    (it "recursively calls function and prompts for size if size provided by user input is invalid"
-                        (should= 7
-                                 (with-in-str "14\n7"
-                                   (prompt-for-move board)))))
 
           (describe "translate-move"
                     (it "translates move input by user to corresponding board cell"

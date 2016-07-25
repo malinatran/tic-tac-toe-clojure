@@ -1,9 +1,8 @@
 (ns tic-tac-toe.game
   (:require [tic-tac-toe.board :as board]))
 
-(defn get-all-markers
-  [board]
-  (distinct board))
+(def player-markers ["X" "O"])
+(def current-player (rand-nth player-markers))
 
 (defn winner?
   [board marker]
@@ -13,9 +12,8 @@
 
 (defn get-winner
   [board]
-  (let [markers (get-all-markers board)]
-    (first (filter (fn [marker]
-              (winner? board marker)) markers))))
+  (first (filter (fn [marker]
+                   (winner? board marker)) player-markers)))
 
 (defn win?
   [board]
@@ -23,11 +21,15 @@
 
 (defn game-over?
   [board]
-  (let [markers (get-all-markers board)]
-    (and (board/board-filled? board) (win? board))))
+  (and (board/board-filled? board) (win? board)))
 
 (defn switch-player
-  [marker]
-  (if (= "X" marker)
-    "O"
-    "X"))
+  ([marker]
+  (switch-player marker player-markers))
+
+  ([marker markers]
+  (let [last-index (- (count markers) 1)
+        current-index (.indexOf markers marker)]
+    (if (= current-index 0)
+      (get markers last-index)
+      (get markers (- current-index 1))))))
