@@ -12,6 +12,10 @@
   [board]
   (= -1 (.indexOf board nil)))
 
+(defn board-empty?
+  [board]
+  (= (count board) (get (frequencies board) nil)))
+
 (defn get-empty-cells
   [board]
   (remove nil? (map-indexed (fn [index cell]

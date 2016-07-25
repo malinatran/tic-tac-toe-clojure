@@ -25,8 +25,9 @@
   (- move 1))
 
 (defn print-board
-  [size]
-  (println (vec (range 1 (+ size 1)))))
+  [board]
+  (map-indexed (fn [index cell]
+                 (if (nil? cell) (+ index 1) cell)) board))
 
 (defn print-outcome
   [result]

@@ -48,6 +48,16 @@
                     (it "returns false if board has empty cells"
                         (should= false (board-filled? board))))
 
+          (describe "board-empty?"
+                    (it "returns true if board is empty"
+                        (should= true (board-empty? board)))
+
+                    (it "returns false if board is not empty"
+                        (should= false (board-empty? partial-board)))
+
+                    (it "returns false if board is filled"
+                        (should= false (board-empty? full-board))))
+
           (describe "get-empty-cells"
                     (it "returns a vector of empty cell numbers"
                         (should= [0 1 2 3 4 5] (get-empty-cells partial-board)))

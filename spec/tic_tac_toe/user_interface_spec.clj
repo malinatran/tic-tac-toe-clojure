@@ -11,7 +11,13 @@
           (before-all
             (def x-marker "X")
             (def board (board/create-board 9))
-            (def length (board/get-length board)))
+            (def length (board/get-length board))
+            (def empty-board [nil nil nil
+                              nil nil nil
+                              nil nil nil])
+            (def partial-board ["X" nil nil
+                                "O" "X" nil
+                                nil nil nil]))
 
           (describe "prompt"
                     (it "tests the output of prompt"
@@ -45,11 +51,13 @@
                         (should= 8 (translate-move 9))))
 
           (describe "print-board"
-                    (it "displays the board's grid"
-                        (let [board [1 2 3
-                                     4 5 6
-                                     7 8 9]]
-                          (should= (str board "\n") (with-out-str (print-board 9))))))
+                    (it "displays the board's grid with numerical values"
+                        (let [board [1 2 3 4 5 6 7 8 9]]
+                          (should= board (print-board empty-board))))
+
+                    (it "displays the board's grid with markers and numerical values"
+                        (let [board ["X" 2 3 "O" "X" 6 7 8 9]]
+                          (should= board (print-board partial-board)))))
 
           (describe "print-outcome"
                     (it "displays marker of winner if there is a win"

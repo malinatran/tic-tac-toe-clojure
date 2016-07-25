@@ -3,6 +3,8 @@
             [tic-tac-toe.validator :refer [valid-move?]]
             [tic-tac-toe.user-interface :refer [prompt]]))
 
+(def marker "O")
+
 (defn make-move
   ([board]
    (let [length (get-length board)]
