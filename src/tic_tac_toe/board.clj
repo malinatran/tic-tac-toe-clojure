@@ -66,19 +66,27 @@
         columns (get-columns board size)]
     (boolean (some #(filled-with-marker? % marker) columns))))
 
+(defn get-forward-diagonal-indexes
+  [board]
+  (let [length (get-length board)
+        cell-indexes (vec (range length))
+        forward-inc (- (get-size board) 1)]
+    (filter (fn [index]
+              (and (not (= index 0))
+                   (not (= index (- length 1)))
+                   (= (mod index forward-inc) 0))) cell-indexes)))
+
+(defn get-backward-diagonal-indexes
+  [board]
+  (let [cell-indexes (vec (range (get-length board)))
+        backward-inc (+ (get-size board) 1)]
+    (filter (fn [index]
+              (= (mod index backward-inc) 0)) cell-indexes)))
+
 (defn get-diagonals
   [board size]
-  (let [length (get-length board)
-        backward-inc (+ size 1)
-        forward-inc (- size 1)
-        cell-indexes (vec (range length))
-        forward-diagonal (filter (fn [index]
-                                   (and
-                                     (not (= index 0))
-                                     (not (= index (- length 1)))
-                                     (= (mod index forward-inc) 0))) cell-indexes)
-        backward-diagonal (filter (fn [index]
-                                    (= (mod index backward-inc) 0)) cell-indexes)
+  (let [forward-diagonal (get-forward-diagonal-indexes board)
+        backward-diagonal (get-backward-diagonal-indexes board)
         diagonal-indexes (vector forward-diagonal backward-diagonal)]
 
     (map (fn [diagonal]

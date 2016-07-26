@@ -24,10 +24,20 @@
   [move]
   (- move 1))
 
-(defn print-board
+(defn replace-nils-with-indexes
   [board]
   (map-indexed (fn [index cell]
                  (if (nil? cell) (+ index 1) cell)) board))
+
+(defn format-board
+  [board]
+  (let [size (int (java.lang.Math/sqrt (count board)))
+        board (replace-nils-with-indexes board)]
+      (apply concat (interpose ["\n"] (partition size board)))))
+
+(defn print-board
+  [board]
+  (println (format-board board)))
 
 (defn print-outcome
   [result]

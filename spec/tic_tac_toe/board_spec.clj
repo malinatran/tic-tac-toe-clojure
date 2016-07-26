@@ -129,6 +129,14 @@
                     (it "returns false if vertically adjacent cells are not filled with the same marker"
                         (should= false (any-column-filled? full-board o-marker))))
 
+          (describe "get-forward-diagonal-indexes"
+                    (it "returns a vector of indexes for a board's forward diagonal"
+                        (should= [2 4 6] (get-forward-diagonal-indexes board))))
+
+          (describe "get-backward-diagonal-indexes"
+                    (it "returns a vector of indexes for board's backward diagonal"
+                        (should= [0 4 8] (get-backward-diagonal-indexes board))))
+
           (describe "get-diagonals"
                     (it "returns a vector of cells representing a board's backward diagonal"
                         (should= [[nil "X" nil]["X" "X" "X"]]
