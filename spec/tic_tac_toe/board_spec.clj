@@ -5,10 +5,12 @@
 (describe "tic-tac-toe board"
 
           (before-all
-            (def board (create-board 9))
             (def size 3)
             (def x-marker "X")
             (def o-marker "O")
+            (def board (vec [nil nil nil
+                             nil nil nil
+                             nil nil nil])))
             (def small-board (vec [nil nil nil nil]))
             (def partial-board (vec [nil nil nil
                                      nil nil nil
@@ -31,10 +33,10 @@
 
           (describe "create-board"
                     (it "creates a new board with 9 cells"
-                        (should= 9 (count (create-board 9))))
+                        (should= 9 (count (create-board 3))))
 
                     (it "creates a new board with 16 cells"
-                        (should= 16 (count (create-board 16)))))
+                        (should= 16 (count (create-board 4)))))
 
           (describe "cell-empty?"
                     (it "returns true if cell is empty space"
@@ -66,15 +68,14 @@
                         (should= [] (get-empty-cells full-board))))
 
           (describe "mark-cell"
-                    (it "sets cell with marker"
+                    (it "sets cell with marker only if cell is empty"
                         (let [cell 1]
                           (should= [nil "X" nil nil nil nil nil nil nil]
                                    (mark-cell board cell x-marker))))
 
-                    (it "throws an error message if cell is already taken"
-                        (let [cell 1]
-                          (should-throw Error "Cell is already taken."
-                                        (mark-cell full-board cell o-marker)))))
+                    (it "returns nil if cell is not empty"
+                        (let [cell 7]
+                          (should= nil (mark-cell partial-board cell o-marker)))))
 
           (describe "clear-cell"
                     (it "sets cell to be nil"
@@ -150,4 +151,4 @@
                         (should= true (any-diagonal-filled? backward-diagonal-board x-marker)))
 
                     (it "returns false if neither diagonal is filled"
-                        (should= false (any-diagonal-filled? full-board o-marker)))))
+                        (should= false (any-diagonal-filled? full-board o-marker))))

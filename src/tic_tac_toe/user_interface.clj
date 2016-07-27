@@ -33,12 +33,14 @@
   [board]
   (let [size (int (java.lang.Math/sqrt (count board)))
         board (replace-nils-with-indexes board)]
-      (apply concat (interpose ["\n"] (partition size board)))))
+    (apply concat (interpose ["\n"] (partition size board)))))
 
 (defn print-board
   [board]
   (println (format-board board)))
 
 (defn print-outcome
-  [result]
-  (println (str result " wins!")))
+  ([]
+   (println "Nobody wins in the game of life - er, I mean, tic-tac-toe."))
+  ([result]
+   (println (str result " wins!"))))

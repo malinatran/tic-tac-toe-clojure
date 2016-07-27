@@ -65,9 +65,14 @@
                         (let [board ["X" 2 3 "\n" "O" "X" 6 "\n" 7 8 9]]
                           (should= board (format-board partial-board)))))
 
+          (describe "print-board"
+                    (it "prints the formatted version of the board"
+                        (let [board "(X 2 3 \n O X 6 \n 7 8 9)\n"]
+                          (should= board (with-out-str (print-board partial-board))))))
+
           (describe "print-outcome"
                     (it "displays marker of winner if there is a win"
                         (should= "X wins!\n" (with-out-str (print-outcome x-marker))))
 
                     (it "displays a message that nobody won if there isn't a win"
-                        (should= "Nobody wins!\n" (with-out-str (print-outcome "Nobody"))))))
+                        (should= "Nobody wins in the game of life - er, I mean, tic-tac-toe.\n" (with-out-str (print-outcome))))))

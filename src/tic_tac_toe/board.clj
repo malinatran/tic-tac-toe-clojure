@@ -2,7 +2,7 @@
 
 (defn create-board
   [size]
-  (vec (repeat size nil)))
+  (vec (repeat (* size size) nil)))
 
 (defn cell-empty?
   [board cell]
@@ -23,9 +23,8 @@
 
 (defn mark-cell
   [board cell marker]
-  (if (cell-empty? board cell)
-    (assoc board cell marker)
-    (throw (Error. "Cell is already taken."))))
+  (when (cell-empty? board cell)
+    (assoc board cell marker)))
 
 (defn clear-cell
   [board cell]

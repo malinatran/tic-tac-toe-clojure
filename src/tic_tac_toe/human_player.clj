@@ -8,12 +8,13 @@
 (defn make-move
   ([board]
    (let [length (get-length board)]
-     (make-move length "Enter your move:")))
+     (make-move board length "Enter your move:")))
 
-  ([length message]
-   (let [move (Integer/parseInt (prompt message))
+  ([board length message]
+   (let [board board
+         move (Integer/parseInt (prompt message))
          length length]
-     (if (valid-move? move length)
+     (if (valid-move? board move length)
        move
-       (recur length message)))))
+       (recur board length message)))))
 

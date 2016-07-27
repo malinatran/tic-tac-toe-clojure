@@ -10,3 +10,8 @@
     (if (= (mod length 2) 0)
       0
       center-cell)))
+
+(defn make-random-move
+  [board]
+   (let [empty-cells (board/get-empty-cells board)]
+     (rand-nth empty-cells)))
