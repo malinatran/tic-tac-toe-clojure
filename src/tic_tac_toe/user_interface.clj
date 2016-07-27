@@ -1,5 +1,6 @@
 (ns tic-tac-toe.user-interface
-  (:require [tic-tac-toe.validator :refer [valid-size?]]))
+  (:require [tic-tac-toe.helper :refer [translate-move replace-nils-with-indexes]]
+            [tic-tac-toe.validator :refer [valid-size?]]))
 
 (defn prompt
   [message]
@@ -20,20 +21,11 @@
        size
        (recur message)))))
 
-(defn translate-move
-  [move]
-  (- move 1))
-
-(defn replace-nils-with-indexes
-  [board]
-  (map-indexed (fn [index cell]
-                 (if (nil? cell) (+ index 1) cell)) board))
-
 (defn format-board
   [board]
   (let [size (int (java.lang.Math/sqrt (count board)))
         board (replace-nils-with-indexes board)]
-    (apply concat (interpose ["\n"] (partition size board)))))
+    (clojure.string/join " | " (cons "\n" (concat (apply concat (interpose ["\n"] (partition size board))) "\n")))))
 
 (defn print-board
   [board]

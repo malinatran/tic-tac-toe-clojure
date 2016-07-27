@@ -1,7 +1,6 @@
 (ns tic-tac-toe.user-interface-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.user-interface :refer :all]
-            [tic-tac-toe.board :as board]))
+            [tic-tac-toe.user-interface :refer :all]))
 
 (describe "user interface console"
 
@@ -10,12 +9,6 @@
 
           (before-all
             (def x-marker "X")
-            (def board (board/create-board 9))
-            (def length (board/get-length board))
-            (def mapped-board [1 2 3 4 5 6 7 8 9])
-            (def empty-board [nil nil nil
-                              nil nil nil
-                              nil nil nil])
             (def partial-board ["X" nil nil
                                 "O" "X" nil
                                 nil nil nil]))
@@ -47,27 +40,14 @@
                                  (with-in-str "0\n1\n2\n4"
                                    (prompt-for-size)))))
 
-          (describe "translate-move"
-                    (it "translates move input by user to corresponding board cell"
-                        (should= 8 (translate-move 9))))
-
-          (describe "replace-nils-with-indexes"
-                    (it "displays the board's grid with numerical values"
-                        (let [board [1 2 3 4 5 6 7 8 9]]
-                          (should= board (replace-nils-with-indexes empty-board))))
-
-                    (it "displays the board's grid with markers and numerical values"
-                        (let [board ["X" 2 3 "O" "X" 6 7 8 9]]
-                          (should= board (replace-nils-with-indexes partial-board)))))
-
           (describe "format-board"
-                    (it "adds line breaks for board visualization"
-                        (let [board ["X" 2 3 "\n" "O" "X" 6 "\n" 7 8 9]]
+                    (it "adds line breaks and pipes for board visualization"
+                        (let [board "\n | X | 2 | 3 | \n | O | X | 6 | \n | 7 | 8 | 9 | \n"]
                           (should= board (format-board partial-board)))))
 
           (describe "print-board"
                     (it "prints the formatted version of the board"
-                        (let [board "(X 2 3 \n O X 6 \n 7 8 9)\n"]
+                        (let [board "\n | X | 2 | 3 | \n | O | X | 6 | \n | 7 | 8 | 9 | \n\n"]
                           (should= board (with-out-str (print-board partial-board))))))
 
           (describe "print-outcome"
