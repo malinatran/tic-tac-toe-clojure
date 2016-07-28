@@ -1,11 +1,15 @@
 (ns tic-tac-toe.game
   (:require [tic-tac-toe.board :refer [create-board mark-cell]]
-            [tic-tac-toe.computer-player :refer [make-random-move]]
+            [tic-tac-toe.computer-player :as computer]
             [tic-tac-toe.game-state :refer [game-over? get-winner select-first-player switch-player win?]]
             [tic-tac-toe.helper :refer [translate-move]]
-            [tic-tac-toe.human-player :refer [make-move]]
+            [tic-tac-toe.human-player :as human]
             [tic-tac-toe.user-interface :refer [prompt-for-size print-outcome print-board welcome-message]])
   (:gen-class))
+
+(defn is-computer?
+  [player]
+  (= player "X"))
 
 (defn announce-outcome
   [board]
@@ -15,16 +19,16 @@
 
 (defn prompt-for-move
   [board player]
-  (if (= player "X")
-    (make-random-move board)
+  (if (is-computer? player)
+    (computer/make-move board player (switch-player player))
     (do (print-board board)
-        (make-move board))))
+        (human/make-move board))))
 
 (defn get-move
   [board player]
   (let [move (prompt-for-move board player)
         cell (translate-move move)]
-    (if (= player "X")
+    (if (is-computer? player)
       (mark-cell board move player)
       (mark-cell board cell player))))
 
