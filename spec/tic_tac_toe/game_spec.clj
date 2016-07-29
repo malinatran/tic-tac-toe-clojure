@@ -10,13 +10,12 @@
           (before-all
             (def x-marker "X")
             (def o-marker "O")
-            (def markers ["X" "M" "O"])
             (def partial-board (vec [nil nil "X"
                                      "O" "O" nil
                                      nil nil nil]))
-            (def winning-board-full (vec ["X" "O" "X"
-                                          "O" "X" "O"
-                                          "O" "O" "X"]))
+            (def winning-board (vec ["X" "O" "X"
+                                     "O" "X" "O"
+                                     "O" "O" "X"]))
             (def tie-board (vec ["X" "O" "X"
                                  "X" "X" "O"
                                  "O" "X" "O"])))
@@ -24,7 +23,7 @@
           (describe "announce-outcome"
                     (it "prints a message about the marker that won"
                         (should= "X wins!\n"
-                                 (with-out-str (announce-outcome winning-board-full))))
+                                 (with-out-str (announce-outcome winning-board))))
 
                     (it "prints a message about a draw if there is no win"
                         (should= "Nobody wins in the game of life - er, I mean, tic-tac-toe.\n"
@@ -55,4 +54,4 @@
           (describe "run-game-loop"
                     (it "announces outcome if game is over"
                         (should= "\n | X | O | X | \n | O | X | O | \n | O | O | X | \n\nX wins!\n"
-                                 (with-out-str (run-game-loop winning-board-full x-marker))))))
+                                 (with-out-str (run-game-loop winning-board x-marker))))))
