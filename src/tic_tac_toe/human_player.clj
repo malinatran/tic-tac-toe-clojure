@@ -3,16 +3,19 @@
             [tic-tac-toe.validator :refer [valid-move?]]
             [tic-tac-toe.user-interface :refer [prompt]]))
 
-(defn make-move
+(defn make-human-move
   ([board]
    (let [length (get-length board)]
-     (make-move board length "Enter your move:")))
+     (make-human-move board length "Enter your move:")))
 
   ([board length message]
-   (let [board board
-         move (Integer/parseInt (prompt message))
-         length length]
-     (if (valid-move? board move length)
-       move
-       (recur board length message)))))
+   (try
+     (let [board board
+           move (Integer/parseInt (prompt message))
+           length length]
+       (if (valid-move? board move length)
+         move
+         (make-human-move board)))
+     (catch Exception e
+       (make-human-move board)))))
 

@@ -16,10 +16,13 @@
    (prompt-for-size "Enter a board size:"))
 
   ([message]
-   (let [size (Integer/parseInt (prompt message))]
-     (if (valid-size? size)
-       size
-       (recur message)))))
+   (try
+    (let [size (Integer/parseInt (prompt message))]
+      (if (valid-size? size)
+        size
+        (prompt-for-size)))
+    (catch Exception e
+      (prompt-for-size)))))
 
 (defn format-board
   [board]

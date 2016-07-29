@@ -5,11 +5,8 @@
 * Incorporate Minimax to create an unbeatable AI
 * Adhere to [SOLID principles](https://www.wikiwand.com/en/SOLID_(object-oriented_design)) and incorporate [TDD](https://www.wikiwand.com/en/Test-driven_development)
 
-#### Play
-To run the game, enter `lein run`.
-
-#### Tests
-To run tests, enter `lein spec` or `lein spec-a` (to see all of the assertions within their respective namespaces).
+#### Instructions
+Install [Leiningen](http://leiningen.org/). To run the game, enter `lein run`. To run tests, enter `lein spec` or `lein spec-a` (to see all of the assertions within their respective namespaces).
 
 #### File Structure
 In `src/tic_tac_toe`, you will find the following files/namespaces and corresponding spec files in `spec/tic_tac_toe`:

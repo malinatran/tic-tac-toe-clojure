@@ -6,6 +6,10 @@
 
 (def computer "X")
 
+(defn is-computer?
+  [player]
+  (= player "X"))
+
 (defn even-numbered-board?
   [length]
   (= (mod length 2) 0))
@@ -28,17 +32,20 @@
           :else (make-minimax-move board (switch-player player) opponent (inc depth)))))
 
 (defn best-move
-  [scores]
-  (key (apply max-key val scores)))
+  [player scores]
+  (if (is-computer? player)
+    (key (apply max-key val scores))
+    (key (apply min-key val scores))))
 
 (defn- make-minimax-move
   [board player opponent depth]
   (let [moves (get-empty-cells board)
-        scores (map #(score-move (mark-cell board % player) player opponent depth) moves)
+        scores (map #(score-move
+                       (mark-cell board % player) player opponent depth) moves)
         moves-with-scores (zipmap moves scores)]
-      (best-move moves-with-scores)))
+      (best-move player moves-with-scores)))
 
-(defn make-move
+(defn make-computer-move
   [board player opponent]
   (let [depth 0]
     (if (board-empty? board)

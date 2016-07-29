@@ -8,6 +8,7 @@
             (def o-marker "O")
             (def x-marker "X")
             (def depth 0)
+            (def scores {6 10 4 9 5 8})
             (def board-without-center [nil nil nil nil])
             (def winning-o-board ["O" "O" "O"
                                   "X" "X" "O"
@@ -45,18 +46,19 @@
                         (should= 0 (score-move tie-board x-marker o-marker depth))))
 
           (describe "best-move"
-                    (it "returns the highest-scored cell"
-                        (let [scores {6 10 4 9 5 8}]
-                          (should= 6 (best-move scores)))))
+                    (it "returns the highest-scored move if current player is computer"
+                        (should= 6 (best-move x-marker scores)))
+
+                    (it "returns the lowest-scored move if current player is human"
+                        (should= 5 (best-move o-marker scores))))
 
           (describe "make-move"
                     (it "returns center cell if computer is making first move on a 3x3 board"
-                        (should= 4 (make-move empty-board x-marker o-marker)))
+                        (should= 4 (make-computer-move empty-board x-marker o-marker)))
 
                     (it "returns the first cell of a board if computer is making first move on a 2x2 board"
-                        (should= 0 (make-move board-without-center x-marker o-marker)))
+                        (should= 0 (make-computer-move board-without-center x-marker o-marker)))
 
                     (it "returns minimax move if computer is not making first move"
                         (with-redefs [best-move (constantly 6)]
-                          (should= 6 (make-move partial-board x-marker o-marker))))))
-
+                          (should= 6 (make-computer-move partial-board x-marker o-marker))))))
