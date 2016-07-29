@@ -26,6 +26,13 @@
                                 nil "O" nil
                                 nil nil nil]))
 
+          (describe "first-move?"
+                    (it "returns true if this is the computer's first move"
+                        (should= true (first-move? empty-board)))
+
+                    (it "returns false if this is not the computer's first move"
+                        (should= false (first-move? partial-board))))
+
           (describe "even-numbered-board?"
                     (it "returns true if the board is 4x4"
                         (let [length 4]

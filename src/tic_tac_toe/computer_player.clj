@@ -1,10 +1,14 @@
 (ns tic-tac-toe.computer-player
-  (:require [tic-tac-toe.board :refer [board-empty? board-filled? clear-cell get-empty-cells mark-cell]]
+  (:require [tic-tac-toe.board :refer [board-empty? board-filled? clear-cell get-empty-cells get-length mark-cell]]
             [tic-tac-toe.game-state :refer [game-over? get-winner switch-player]]))
 
-(declare make-minimax-move)
+(declare select-minimax-move)
 
 (def computer "X")
+
+(defn first-move?
+  [board]
+  (= ((frequencies board) computer) nil))
 
 (defn is-computer?
   [player]
@@ -14,7 +18,7 @@
   [length]
   (= (mod length 2) 0))
 
-(defn- make-first-move
+(defn- select-first-or-center-cell
   [board]
   (let [length (count board)
         first-cell 0
@@ -29,7 +33,7 @@
     (cond (= winner computer) (- 10 depth)
           (= winner opponent) (- depth 10)
           (and (nil? winner) (board-filled? board)) 0
-          :else (make-minimax-move board (switch-player player) opponent (inc depth)))))
+          :else (select-minimax-move board (switch-player player) opponent (inc depth)))))
 
 (defn best-move
   [player scores]
@@ -37,7 +41,7 @@
     (key (apply max-key val scores))
     (key (apply min-key val scores))))
 
-(defn- make-minimax-move
+(defn- select-minimax-move
   [board player opponent depth]
   (let [moves (get-empty-cells board)
         scores (map #(score-move (mark-cell board % player) player opponent depth) moves)
@@ -47,6 +51,6 @@
 (defn make-computer-move
   [board player opponent]
   (let [depth 0]
-    (if (board-empty? board)
-      (make-first-move board)
-      (make-minimax-move board player opponent depth))))
+    (if (first-move? board)
+      (select-first-or-center-cell board)
+      (select-minimax-move board player opponent depth))))
