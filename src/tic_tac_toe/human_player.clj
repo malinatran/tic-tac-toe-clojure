@@ -5,17 +5,16 @@
 
 (defn make-human-move
   ([board]
-   (let [length (get-length board)]
-     (make-human-move board length "Enter your move:")))
+   (make-human-move board "Enter your move:"))
 
-  ([board length message]
+  ([board message]
    (try
      (let [board board
            move (Integer/parseInt (prompt message))
-           length length]
+           length (get-length board)]
        (if (valid-move? board move length)
          move
-         (make-human-move board)))
+         (make-human-move board "Enter your move (must be a number on the board):")))
      (catch Exception e
-       (make-human-move board)))))
+       (make-human-move board "Enter your move (must be a number on the board):")))))
 

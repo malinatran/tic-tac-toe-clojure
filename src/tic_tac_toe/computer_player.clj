@@ -40,8 +40,7 @@
 (defn- make-minimax-move
   [board player opponent depth]
   (let [moves (get-empty-cells board)
-        scores (map #(score-move
-                       (mark-cell board % player) player opponent depth) moves)
+        scores (map #(score-move (mark-cell board % player) player opponent depth) moves)
         moves-with-scores (zipmap moves scores)]
       (best-move player moves-with-scores)))
 

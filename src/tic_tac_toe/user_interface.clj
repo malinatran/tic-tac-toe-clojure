@@ -20,9 +20,9 @@
     (let [size (Integer/parseInt (prompt message))]
       (if (valid-size? size)
         size
-        (prompt-for-size)))
+        (prompt-for-size "Enter a board size (greater than or equal to 3):")))
     (catch Exception e
-      (prompt-for-size)))))
+      (prompt-for-size "Enter a board size (greater than or equal to 3):")))))
 
 (defn format-board
   [board]
