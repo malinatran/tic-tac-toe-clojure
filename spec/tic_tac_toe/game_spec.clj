@@ -53,5 +53,5 @@
 
           (describe "run-game-loop"
                     (it "announces outcome if game is over"
-                        (should= "\n | X | O | X | \n | O | X | O | \n | O | O | X | \n\nX wins!\n"
+                        (should= "\n |  X  |  O  |  X  | \n |  O  |  X  |  O  | \n |  O  |  O  |  X  | \n\nX wins!\n"
                                  (with-out-str (run-game-loop winning-board x-marker))))))

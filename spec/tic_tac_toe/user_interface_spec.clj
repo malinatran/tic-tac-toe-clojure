@@ -42,12 +42,12 @@
 
           (describe "format-board"
                     (it "adds line breaks and pipes for board visualization"
-                        (let [board "\n | X | 2 | 3 | \n | O | X | 6 | \n | 7 | 8 | 9 | \n"]
+                        (let [board "\n |  X  |  2  |  3  | \n |  O  |  X  |  6  | \n |  7  |  8  |  9  | \n"]
                           (should= board (format-board partial-board)))))
 
           (describe "print-board"
                     (it "prints the formatted version of the board"
-                        (let [board "\n | X | 2 | 3 | \n | O | X | 6 | \n | 7 | 8 | 9 | \n\n"]
+                        (let [board "\n |  X  |  2  |  3  | \n |  O  |  X  |  6  | \n |  7  |  8  |  9  | \n\n"]
                           (should= board (with-out-str (print-board partial-board))))))
 
           (describe "print-outcome"
