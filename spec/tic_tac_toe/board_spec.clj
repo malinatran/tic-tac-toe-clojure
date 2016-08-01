@@ -115,11 +115,6 @@
                                   (let [cells ["X" "O" "X"]]
                                     (should= false (filled-with-marker? cells x-marker)))))
 
-          (describe "get-rows"
-                    (it "returns a collection of collection representing rows"
-                        (should= [["X" "O" "X"]["O" "X" "X"]["O" "X" "O"]]
-                                 (get-rows full-board size))))
-
           (describe "any-row-filled?"
                     (it "returns true if horizontally adajcent cells are filled with the same marker"
                         (should= true (any-row-filled? horizontal-board o-marker)))
@@ -127,30 +122,12 @@
                     (it "returns false if horizontally adjacent cells are not filled with the same marker"
                         (should= false (any-row-filled? full-board o-marker))))
 
-          (describe "get-columns"
-                    (it "returns a collection of collection representing columns"
-                        (should= [["X" "X" "X"][nil nil nil][nil nil nil]]
-                                  (get-columns vertical-board size))))
-
            (describe "any-column-filled?"
                       (it "returns true if vertically adjacent cells are filled with the same marker"
                         (should= true (any-column-filled? vertical-board x-marker)))
 
                     (it "returns false if vertically adjacent cells are not filled with the same marker"
                         (should= false (any-column-filled? full-board o-marker))))
-
-          (describe "get-forward-diagonal-indexes"
-                    (it "returns a vector of indexes for a board's forward diagonal"
-                        (should= [2 4 6] (get-forward-diagonal-indexes board))))
-
-          (describe "get-backward-diagonal-indexes"
-                    (it "returns a vector of indexes for board's backward diagonal"
-                        (should= [0 4 8] (get-backward-diagonal-indexes board))))
-
-          (describe "get-diagonals"
-                    (it "returns a vector of cells representing a board's backward diagonal"
-                        (should= [[nil "X" nil]["X" "X" "X"]]
-                                 (get-diagonals backward-diagonal-board size))))
 
           (describe "any-diagonal-filled?"
                     (it "returns true if a forward diagonal is filled"

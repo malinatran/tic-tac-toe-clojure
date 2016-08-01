@@ -4,7 +4,7 @@
             [tic-tac-toe.game-state :refer [game-over? get-winner select-first-player switch-player win?]]
             [tic-tac-toe.board-formatter :refer [translate-move]]
             [tic-tac-toe.human-player :refer [make-human-move]]
-            [tic-tac-toe.user-interface :refer [prompt-for-size print-outcome print-board welcome-message]])
+            [tic-tac-toe.user-interface :refer [display-welcome prompt-for-size print-outcome print-board]])
   (:gen-class))
 
 (defn announce-outcome
@@ -39,7 +39,7 @@
 
 (defn -main
   []
-  (welcome-message)
+  (display-welcome)
   (let [size (prompt-for-size)
         player (select-first-player)]
     (run-game-loop (create-board size) player)))

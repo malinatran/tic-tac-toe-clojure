@@ -24,10 +24,10 @@
                                  (with-in-str "Los Angeles"
                                    (prompt "Which city do you live in?")))))
 
-          (describe "welcome-message"
+          (describe "display-welcome"
                     (it "prints welcome message"
                         (should= "Welcome to tic-tac-toe!\n"
-                                 (with-out-str (welcome-message)))))
+                                 (with-out-str (display-welcome)))))
 
           (describe "prompt-for-size"
                     (it "returns size if size provided by user input is valid"

@@ -1,15 +1,15 @@
 (ns tic-tac-toe.board-formatter)
 
-(defn translate-move
-  [move]
-  (- move 1))
-
-(defn padding
+(defn- padding
   [cell]
   (let [digit (count (str cell))]
   (cond (= digit 1) (str " " cell " ")
         (= digit 2) (str " " cell)
         :else (str cell))))
+
+(defn translate-move
+  [move]
+  (- move 1))
 
 (defn replace-nils-with-indexes
   [board]

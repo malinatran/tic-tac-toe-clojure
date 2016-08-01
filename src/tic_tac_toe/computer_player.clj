@@ -6,7 +6,7 @@
 
 (def computer "X")
 
-(defn first-move?
+(defn- first-move?
   [board]
   (= ((frequencies board) computer) nil))
 
@@ -23,7 +23,7 @@
       first-cell
       center-cell)))
 
-(defn score-move
+(defn- score-move
   [board player opponent depth]
   (let [winner (get-winner board)]
     (cond (= winner computer) (- 10 depth)

@@ -1,5 +1,6 @@
 (ns tic-tac-toe.user-interface
   (:require [tic-tac-toe.board-formatter :refer [replace-nils-with-indexes add-cell-padding add-breaks-and-dividers]]
+            [tic-tac-toe.messages :refer :all]
             [tic-tac-toe.validator :refer [valid-size?]]))
 
 (defn prompt
@@ -7,22 +8,22 @@
   (println message)
   (read-line))
 
-(defn welcome-message
+(defn display-welcome
   []
-  (println "Welcome to tic-tac-toe!"))
+  (println welcome-message))
 
 (defn prompt-for-size
   ([]
-   (prompt-for-size "Enter a board size:"))
+   (prompt-for-size size-message))
 
   ([message]
    (try
     (let [size (Integer/parseInt (prompt message))]
       (if (valid-size? size)
         size
-        (prompt-for-size "Enter a board size (greater than or equal to 3):")))
+        (prompt-for-size size-message-with-guidelines)))
     (catch Exception e
-      (prompt-for-size "Enter a board size (greater than or equal to 3):")))))
+      (prompt-for-size size-message-with-guidelines)))))
 
 (defn print-board
   [board]
@@ -30,6 +31,6 @@
 
 (defn print-outcome
   ([]
-   (println "Nobody wins in the game of life - er, I mean, tic-tac-toe."))
+   (println draw-message))
   ([result]
-   (println (str result " wins!"))))
+   (println (str result win-message))))
