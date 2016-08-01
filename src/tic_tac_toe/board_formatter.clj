@@ -1,4 +1,4 @@
-(ns tic-tac-toe.helper)
+(ns tic-tac-toe.board-formatter)
 
 (defn translate-move
   [move]
@@ -17,7 +17,13 @@
                  (if (nil? cell)
                    (+ index 1)
                    cell)) board))
-
 (defn add-cell-padding
   [board]
   (map #(padding %) board))
+
+(defn add-breaks-and-dividers
+  [board]
+  (let [size (int (java.lang.Math/sqrt (count board)))
+        indexed-board (replace-nils-with-indexes board)
+        formatted-board (add-cell-padding indexed-board)]
+    (clojure.string/join " | " (cons "\n" (concat (apply concat (interpose ["\n"] (partition size formatted-board))) "\n")))))

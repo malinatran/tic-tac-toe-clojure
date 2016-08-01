@@ -38,6 +38,15 @@
                     (it "creates a new board with 16 cells"
                         (should= 16 (count (create-board 4)))))
 
+          (describe "even-numbered-board?"
+                    (it "returns true if the board is 4x4"
+                        (let [length 4]
+                          (should= true (even-numbered-board? length))))
+
+                    (it "returns false if the board is 5x5"
+                        (let [length 5]
+                          (should= false (even-numbered-board? length)))))
+
           (describe "cell-empty?"
                     (it "returns true if cell is empty space"
                         (let [cell 2]

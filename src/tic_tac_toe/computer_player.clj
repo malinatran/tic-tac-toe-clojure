@@ -1,5 +1,5 @@
 (ns tic-tac-toe.computer-player
-  (:require [tic-tac-toe.board :refer [board-empty? board-filled? clear-cell get-empty-cells get-length mark-cell]]
+  (:require [tic-tac-toe.board :refer [board-empty? board-filled? even-numbered-board? clear-cell get-empty-cells get-length mark-cell]]
             [tic-tac-toe.game-state :refer [game-over? get-winner switch-player]]))
 
 (declare select-minimax-move)
@@ -13,10 +13,6 @@
 (defn is-computer?
   [player]
   (= player "X"))
-
-(defn even-numbered-board?
-  [length]
-  (= (mod length 2) 0))
 
 (defn- select-first-or-center-cell
   [board]

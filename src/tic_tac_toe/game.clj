@@ -2,7 +2,7 @@
   (:require [tic-tac-toe.board :refer [create-board mark-cell]]
             [tic-tac-toe.computer-player :refer [is-computer? make-computer-move]]
             [tic-tac-toe.game-state :refer [game-over? get-winner select-first-player switch-player win?]]
-            [tic-tac-toe.helper :refer [translate-move]]
+            [tic-tac-toe.board-formatter :refer [translate-move]]
             [tic-tac-toe.human-player :refer [make-human-move]]
             [tic-tac-toe.user-interface :refer [prompt-for-size print-outcome print-board welcome-message]])
   (:gen-class))

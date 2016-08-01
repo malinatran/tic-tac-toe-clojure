@@ -4,6 +4,10 @@
   [size]
   (vec (repeat (* size size) nil)))
 
+(defn even-numbered-board?
+  [length]
+  (= (mod length 2) 0))
+
 (defn cell-empty?
   [board cell]
   (nil? (get board cell)))

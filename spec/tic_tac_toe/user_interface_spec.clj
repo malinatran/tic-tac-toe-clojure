@@ -40,11 +40,6 @@
                                  (with-in-str "0\n1\n2\n4"
                                    (prompt-for-size)))))
 
-          (describe "format-board"
-                    (it "adds line breaks and pipes for board visualization"
-                        (let [board "\n |  X  |  2  |  3  | \n |  O  |  X  |  6  | \n |  7  |  8  |  9  | \n"]
-                          (should= board (format-board partial-board)))))
-
           (describe "print-board"
                     (it "prints the formatted version of the board"
                         (let [board "\n |  X  |  2  |  3  | \n |  O  |  X  |  6  | \n |  7  |  8  |  9  | \n\n"]

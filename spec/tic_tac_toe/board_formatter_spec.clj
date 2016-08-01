@@ -1,8 +1,8 @@
-(ns tic-tac-toe.helper-spec
+(ns tic-tac-toe.board-formatter-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.helper :refer :all]))
+            [tic-tac-toe.board-formatter :refer :all]))
 
-(describe "user interface helper"
+(describe "board formatting and translating of moves"
 
           (before-all
             (def empty-board [nil nil nil
@@ -38,8 +38,12 @@
                     (it "displays the board's grid with markers and numerical values"
                         (let [board ["X" 2 3 "O" "X" 6 7 8 9]]
                           (should= board (replace-nils-with-indexes partial-board)))))
-
           (describe "add-cell-padding"
                     (it "adds padding to indexes and markers"
                         (let [board [ " X " "" "" " O " " X " "" "" "" ""]]
-                          (should= board (add-cell-padding partial-board))))))
+                          (should= board (add-cell-padding partial-board)))))
+
+          (describe "add-breaks-and-dividers"
+                    (it "adds line breaks and pipes for board visualization"
+                        (let [board "\n |  X  |  2  |  3  | \n |  O  |  X  |  6  | \n |  7  |  8  |  9  | \n"]
+                          (should= board (add-breaks-and-dividers partial-board))))))

@@ -1,5 +1,5 @@
 (ns tic-tac-toe.user-interface
-  (:require [tic-tac-toe.helper :refer [translate-move replace-nils-with-indexes add-cell-padding]]
+  (:require [tic-tac-toe.board-formatter :refer [replace-nils-with-indexes add-cell-padding add-breaks-and-dividers]]
             [tic-tac-toe.validator :refer [valid-size?]]))
 
 (defn prompt
@@ -24,16 +24,9 @@
     (catch Exception e
       (prompt-for-size "Enter a board size (greater than or equal to 3):")))))
 
-(defn format-board
-  [board]
-  (let [size (int (java.lang.Math/sqrt (count board)))
-        indexed-board (replace-nils-with-indexes board)
-        formatted-board (add-cell-padding indexed-board)]
-    (clojure.string/join " | " (cons "\n" (concat (apply concat (interpose ["\n"] (partition size formatted-board))) "\n")))))
-
 (defn print-board
   [board]
-  (println (format-board board)))
+  (println (add-breaks-and-dividers board)))
 
 (defn print-outcome
   ([]

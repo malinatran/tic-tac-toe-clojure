@@ -33,15 +33,6 @@
                     (it "returns false if this is not the computer's first move"
                         (should= false (first-move? partial-board))))
 
-          (describe "even-numbered-board?"
-                    (it "returns true if the board is 4x4"
-                        (let [length 4]
-                          (should= true (even-numbered-board? length))))
-
-                    (it "returns false if the board is 5x5"
-                        (let [length 5]
-                          (should= false (even-numbered-board? length)))))
-
           (describe "score-move"
                     (it "returns 10 if winner is computer"
                         (should= 10 (score-move winning-x-board x-marker o-marker depth)))
