@@ -1,5 +1,5 @@
 (ns tic-tac-toe.user-interface
-  (:require [tic-tac-toe.board-formatter :refer [replace-nils-with-indexes add-cell-padding add-breaks-and-dividers]]
+  (:require [tic-tac-toe.board-formatter :refer :all]
             [tic-tac-toe.messages :refer :all]
             [tic-tac-toe.validator :refer [valid-size?]]))
 

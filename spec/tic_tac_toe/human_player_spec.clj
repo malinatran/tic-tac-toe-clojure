@@ -15,8 +15,8 @@
           (describe "make-move"
                     (it "returns move if move provided by user input is valid"
                         (should= 7
-                                 (with-in-str "7" (make-human-move board))))
+                                 (with-in-str "7" (get-human-move board))))
 
                     (it "recursively calls function and prompts for size if size provided by user input is invalid"
                         (should= 7
-                                 (with-in-str "14\n7" (make-human-move board))))))
+                                 (with-in-str "14\n7" (get-human-move board))))))

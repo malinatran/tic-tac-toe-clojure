@@ -1,45 +1,41 @@
 (ns tic-tac-toe.game
-  (:require [tic-tac-toe.board :refer [create-board mark-cell]]
-            [tic-tac-toe.computer-player :refer [is-computer? make-computer-move]]
-            [tic-tac-toe.game-state :refer [game-over? get-winner select-first-player switch-player win?]]
-            [tic-tac-toe.board-formatter :refer [translate-move]]
-            [tic-tac-toe.human-player :refer [make-human-move]]
-            [tic-tac-toe.user-interface :refer [display-welcome prompt-for-size print-outcome print-board]])
+  (:require [tic-tac-toe.board :refer [create-board]]
+            [tic-tac-toe.computer-player :refer [is-computer?]]
+            [tic-tac-toe.game-state :refer :all]
+            [tic-tac-toe.player :refer :all]
+            [tic-tac-toe.user-interface :refer :all])
+  (:import [tic-tac-toe.player])
   (:gen-class))
 
 (defn announce-outcome
-  [board]
-  (if (win? board)
-    (print-outcome (get-winner board))
+  [board players]
+  (if (win? board players)
+    (print-outcome (.marker (get-winner board players)))
     (print-outcome)))
 
 (defn prompt-for-move
-  [board player]
-  (if (is-computer? player)
-    (make-computer-move board player (switch-player player))
-    (do (print-board board)
-        (make-human-move board))))
+  [board players]
+  (let [player (first players)]
+    (get-move player board players)))
 
-(defn get-move
-  [board player]
-  (let [move (prompt-for-move board player)
-        cell (translate-move move)]
-    (if (is-computer? player)
-      (mark-cell board move player)
-      (mark-cell board cell player))))
+(defn mark-move-on-board
+  [board players]
+  (let [move (prompt-for-move board players)
+        player (first players)]
+    (make-move player board move)))
 
 (defn run-game-loop
-  [board player]
+  [board players]
   (loop [board board
-         player player]
-    (if (game-over? board)
+         players players]
+    (if (game-over? board players)
       (do (print-board board)
-          (announce-outcome board))
-      (recur (get-move board player) (switch-player player)))))
+          (announce-outcome board players))
+      (recur (mark-move-on-board board players) (switch-player players)))))
 
 (defn -main
   []
   (display-welcome)
   (let [size (prompt-for-size)
-        player (select-first-player)]
-    (run-game-loop (create-board size) player)))
+        players [(new-computer-player "X") (new-human-player "O")]]
+    (run-game-loop (create-board size) players)))

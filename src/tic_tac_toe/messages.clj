@@ -8,7 +8,7 @@
 
 (def move-message "Enter your move:")
 
-(def move-message-with-guidelines "Enter your move (must be a number on the board):")
+(def move-message-with-guidelines "Enter your move (must be an available number on the board):")
 
 (def draw-message "Nobody wins in the game of life - er, I mean, tic-tac-toe.")
 

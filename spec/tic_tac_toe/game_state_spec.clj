@@ -1,14 +1,16 @@
 (ns tic-tac-toe.game-state-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.game-state :refer :all]))
+            [tic-tac-toe.game-state :refer :all]
+            [tic-tac-toe.player :refer :all]))
 
 (describe "game state of tic-tac-toe"
 
           (before-all
             (def x-marker "X")
-            (def m-marker "M")
             (def o-marker "O")
-            (def markers ["X" "M" "O"])
+            (def players [(new-computer-player "X") (new-human-player "O")])
+            (def markers-two-elements ["X" "O"])
+            (def markers-three-elements ["O" "X" "M"])
             (def partial-board (vec [nil nil "X"
                                      "O" "O" nil
                                      nil nil nil]))
@@ -22,53 +24,42 @@
                                  "X" "X" "O"
                                  "O" "X" "O"])))
 
-          (describe "select-first-player"
-                    (it "returns X as the first player"
-                        (with-redefs [select-first-player (constantly "X")]
-                          (should= x-marker (select-first-player markers))
-                          (should-not= o-marker (select-first-player markers))
-                          (should-not= m-marker (select-first-player markers)))))
-
           (describe "switch-player"
-                    (it "returns the other player in a collection of two players (and there is only one arg)"
-                        (should= x-marker (switch-player o-marker)))
+                    (it "returns new collection of two players with players in reverse order"
+                        (let [new-collection ["O" "X"]]
+                          (should= new-collection (switch-player markers-two-elements))))
 
-                    (it "returns the last player of a collection if current player is the first player"
-                        (should= o-marker (switch-player x-marker markers)))
-
-                    (it "returns the first player of a collection if current player is the middle-most player"
-                        (should= x-marker (switch-player m-marker markers)))
-
-                    (it "returns the player of a previous index in a collection"
-                        (should= m-marker (switch-player o-marker markers))))
+                    (it "moves the first player of a collection to the end of a collection and returns new collection"
+                        (let [new-collection ["X" "M" "O"]]
+                          (should= new-collection (switch-player markers-three-elements)))))
 
           (describe "winner?"
                     (it "returns true if marker is a winner"
-                        (should= true (winner? winning-board-full x-marker)))
+                        (should= true (winner? winning-board-full (first players))))
 
                     (it "returns false if marker is not a winner"
-                        (should= false (winner? winning-board-full o-marker))))
+                        (should= false (winner? winning-board-full (second players)))))
 
           (describe "get-winner"
-                    (it "returns the marker of the winner of a full board"
-                        (should= x-marker (get-winner winning-board-full)))
+                    (it "returns the winner of a full board"
+                        (should= (first players) (get-winner winning-board-full players)))
 
-                    (it "returns the marker of the winner of a partial board"
-                        (should= x-marker (get-winner winning-board-partial)))
+                    (it "returns the winner of a partial board"
+                        (should= (first players) (get-winner winning-board-partial players)))
 
                     (it "returns nil if there is no winner"
-                        (should= nil (get-winner tie-board))))
+                        (should= nil (get-winner tie-board players))))
 
           (describe "win?"
                     (it "returns true if the game has a win"
-                        (should= true (win? winning-board-full)))
+                        (should= true (win? winning-board-full players)))
 
                     (it "returns false if the game does not have a win"
-                        (should= false (win? partial-board))))
+                        (should= false (win? partial-board players))))
 
           (describe "game-over?"
                     (it "returns true if there is a win or draw"
-                        (should= true (game-over? winning-board-full)))
+                        (should= true (game-over? winning-board-full players)))
 
                     (it "returns false if there is not a win or draw"
-                        (should= false (game-over? partial-board)))))
+                        (should= false (game-over? partial-board players)))))
