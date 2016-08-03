@@ -9,8 +9,6 @@
                   (with-out-str (it)))
 
           (before-all
-            (def x-marker "X")
-            (def o-marker "O")
             (def current-player-is-computer [(new-computer-player "X") (new-human-player "O")])
             (def current-player-is-human [(new-human-player "O") (new-computer-player "X")])
             (def partial-board (vec [nil nil "X"
@@ -32,29 +30,25 @@
                         (should= "Nobody wins in the game of life - er, I mean, tic-tac-toe.\n"
                                  (with-out-str (announce-outcome tie-board current-player-is-computer)))))
 
-          (describe "prompt-for-move"
-                    (it "returns a random move if current player is computer player"
-                        (with-redefs [prompt-for-move (constantly 2)]
-                          (should= 2 (prompt-for-move partial-board current-player-is-computer))))
-
-                    (it "returns a move if current player is human player"
-                        (should= 1 (with-in-str "1" (prompt-for-move partial-board current-player-is-human)))))
-
-          (describe "mark-move-on-board"
+          (describe "mark-board-with-move"
                     (it "returns a board with translated cell for human player"
                         (let [board ["O" nil "X"
                                      "O" "O" nil
                                      nil nil nil]]
-                          (should= board (with-in-str "1" (mark-move-on-board partial-board current-player-is-human)))))
+                          (should= board (with-in-str "1" (mark-board-with-move partial-board current-player-is-human)))))
 
                     (it "returns a board with move for computer player"
-                        (let [board ["X" nil "X"
-                                     "O" "O" nil
+                        (let [board [nil nil "X"
+                                     "O" "O" "X"
                                      nil nil nil]]
-                          (with-redefs [prompt-for-move (constantly 0)]
-                            (should= board (mark-move-on-board partial-board current-player-is-computer))))))
+                          (with-redefs [get-move (constantly 6)]
+                            (should= board (mark-board-with-move partial-board current-player-is-computer))))))
 
           (describe "run-game-loop"
-                    (it "announces outcome if game is over"
+                    (it "displays board and announces winner if game is over"
                         (should= "\n |  X  |  O  |  X  | \n |  O  |  X  |  O  | \n |  O  |  O  |  X  | \n\nX wins!\n"
-                                 (with-out-str (run-game-loop winning-board current-player-is-computer))))))
+                                 (with-out-str (run-game-loop winning-board current-player-is-computer))))
+
+                    (it "displays board and announces draw if game is over"
+                        (should= "\n |  X  |  O  |  X  | \n |  X  |  X  |  O  | \n |  O  |  X  |  O  | \n\nNobody wins in the game of life - er, I mean, tic-tac-toe.\n"
+                                 (with-out-str (run-game-loop tie-board current-player-is-computer))))))

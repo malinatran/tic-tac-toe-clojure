@@ -11,7 +11,7 @@
 (deftype ComputerPlayer [marker]
   Player
   (get-move [this board players]
-    (get-computer-move board players))
+    (get-computer-move board players marker))
   (make-move [this board move]
     (mark-cell board move marker)))
 

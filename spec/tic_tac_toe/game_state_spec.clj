@@ -57,9 +57,20 @@
                     (it "returns false if the game does not have a win"
                         (should= false (win? partial-board players))))
 
+          (describe "tie?"
+                    (it "returns true if the game has a draw"
+                        (should= true (tie? tie-board players)))
+
+                    (it "returns false if the game does not have a win"
+                        (should= false (tie? partial-board players))))
+
+
           (describe "game-over?"
-                    (it "returns true if there is a win or draw"
+                    (it "returns true if there is a win"
                         (should= true (game-over? winning-board-full players)))
+
+                    (it "returns true if there is a draw"
+                        (should= true (game-over? tie-board players)))
 
                     (it "returns false if there is not a win or draw"
                         (should= false (game-over? partial-board players)))))

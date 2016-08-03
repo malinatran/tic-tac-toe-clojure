@@ -1,6 +1,10 @@
 (ns tic-tac-toe.user-interface
-  (:require [tic-tac-toe.board-formatter :refer :all]
-            [tic-tac-toe.messages :refer :all]
+  (:require [tic-tac-toe.board-formatter :refer [add-breaks-and-dividers]]
+            [tic-tac-toe.messages :refer [draw-message
+                                          size-message
+                                          size-message-with-guidelines
+                                          welcome-message
+                                          win-message]]
             [tic-tac-toe.validator :refer [valid-size?]]))
 
 (defn prompt

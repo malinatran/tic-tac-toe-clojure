@@ -17,6 +17,7 @@
                  (if (nil? cell)
                    (+ index 1)
                    cell)) board))
+
 (defn add-cell-padding
   [board]
   (map #(padding %) board))

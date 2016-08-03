@@ -6,9 +6,10 @@
 (describe "computer player"
 
           (before-all
-            (def o-marker "O")
             (def x-marker "X")
-            (def players [(new-computer-player "X") (new-human-player "O")])
+            (def x-player (new-computer-player "X"))
+            (def o-player (new-human-player "O"))
+            (def players [x-player o-player])
             (def board-without-center [nil nil nil nil])
             (def empty-board [nil nil nil
                               nil nil nil
@@ -17,13 +18,14 @@
                                 nil "O" nil
                                 nil nil nil]))
 
+          (describe "is-computer?"
+                    (it "returns true if computer's marker matches player's marker"
+                        (should= true (is-computer? x-player x-marker)))
+
+                    (it "returns false if computer's marker does not match player's marker"
+                        (should= false (is-computer? o-player x-marker))))
+
           (describe "get-computer-move"
-                    (it "returns center cell if computer is making first move on a 3x3 board"
-                        (should= 4 (get-computer-move empty-board players)))
-
-                    (it "returns the first cell of a board if computer is making first move on a 2x2 board"
-                        (should= 0 (get-computer-move board-without-center players)))
-
                     (it "returns minimax move if computer is not making first move"
                         (with-redefs [best-move (constantly 6)]
-                          (should= 6 (get-computer-move partial-board players))))))
+                          (should= 6 (get-computer-move partial-board players x-marker))))))

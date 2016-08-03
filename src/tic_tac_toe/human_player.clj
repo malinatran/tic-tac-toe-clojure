@@ -1,8 +1,10 @@
 (ns tic-tac-toe.human-player
   (:require [tic-tac-toe.board :refer [get-length]]
-            [tic-tac-toe.messages :refer :all]
+            [tic-tac-toe.messages :refer [move-message
+                                          move-message-with-guidelines]]
             [tic-tac-toe.validator :refer [valid-move?]]
-            [tic-tac-toe.user-interface :refer [print-board prompt]]))
+            [tic-tac-toe.user-interface :refer [print-board
+                                                prompt]]))
 
 (defn get-human-move
   ([board]

@@ -1,5 +1,8 @@
 (ns tic-tac-toe.game-state
-  (:require [tic-tac-toe.board :refer [any-column-filled? any-diagonal-filled? any-row-filled? board-filled?]]))
+  (:require [tic-tac-toe.board :refer [any-column-filled?
+                                       any-diagonal-filled?
+                                       any-row-filled?
+                                       board-filled?]]))
 
 (defn switch-player
   [players]
