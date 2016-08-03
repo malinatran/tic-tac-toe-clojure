@@ -6,9 +6,7 @@
 * Adhere to [SOLID principles](https://www.wikiwand.com/en/SOLID_(object-oriented_design)) and incorporate [TDD](https://www.wikiwand.com/en/Test-driven_development)
 
 #### Instructions
-You can do either one of the following:
-1. Install [Leiningen](http://leiningen.org/). To run the game, enter `lein run`. To run tests, enter `lein spec` or `lein spec-a` (to see all of the assertions within their respective namespaces).
-2. If you do not want to install Leiningen,  and you have Java installed, you can run `java -jar target/tic-tac-toe-0.1.0-SNAPSHOT-standalone.jar`.
+Install [Leiningen](http://leiningen.org/). To run the game, enter `lein run`. To run tests, enter `lein spec` or `lein spec-a` (to see all of the assertions within their respective namespaces).
 
 #### File Structure
 In `src/tic_tac_toe`, you will find the following files/namespaces and corresponding spec files in `spec/tic_tac_toe`:
@@ -25,4 +23,4 @@ In `src/tic_tac_toe`, you will find the following files/namespaces and correspon
 * `validator.clj`: checks for valid board size and move input by user
 
 #### Organization
-![Diagram](https://s31.postimg.org/i5ytymiaz/TTT_Diagram_Clojure_2016_08_03.jpg)
+![Diagram](https://s31.postimg.org/q0d33gh57/TTT_Diagram_Clojure.jpg)
