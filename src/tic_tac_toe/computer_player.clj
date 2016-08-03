@@ -1,8 +1,9 @@
 (ns tic-tac-toe.computer-player
   (:require [tic-tac-toe.board :refer :all]
-            [tic-tac-toe.game-state :refer [game-over? get-winner switch-player]]))
+            [tic-tac-toe.user-interface :refer [print-board]]
+            [tic-tac-toe.game-state :refer [game-over? get-winner switch-player tie? win?]]))
 
-(declare select-minimax-move)
+(declare score-moves)
 
 (defn- first-move?
   [board]
@@ -11,6 +12,10 @@
 (defn is-computer?
   [player]
   (= (.marker player) "X"))
+
+(defn is-opponent?
+  [player]
+  (= (.marker player) "O"))
 
 (defn- select-first-or-center-cell
   [board]
@@ -21,33 +26,51 @@
       first-cell
       center-cell)))
 
-(defn- score-move
-  [board player opponent depth]
-  (let [players [player opponent]
-        winner (get-winner board players)]
-    (cond (= winner "X") (- 10 depth)
-          (= winner opponent) (- depth 10)
-          (and (nil? winner) (board-filled? board)) 0
-          :else (select-minimax-move board (switch-player players) (inc depth)))))
+(defn calculate-win
+  [board players ]
+  ;; (println "I am in calculate win")
+  (let [winner (get-winner board players)]
+    (if (is-computer? winner)
+      10
+      -10)))
+
+(defn best-move-and-score
+  [player moves]
+  (if (is-computer? player)
+    (apply max-key val moves)
+    (apply min-key val moves)))
+
+(defn best-score
+  [player moves]
+  (val (best-move-and-score player moves)))
 
 (defn best-move
-  [player scores]
-  (if (is-computer? player)
-    (key (apply max-key val scores))
-    (key (apply min-key val scores))))
+  [player moves]
+  (key (best-move-and-score player moves)))
+
+(defn- get-score
+  [board players]
+  ;; (println "I am in score move")
+  (cond (win? board players) (calculate-win board players)
+        (tie? board players) 0
+        :else (best-score (second players) (score-moves board (switch-player players)))))
+
+(defn score-moves
+  [board players]
+   (let [moves (get-empty-cells board)
+         player (first players)
+         scores (map #(get-score (mark-cell board % (.marker player)) players) moves)]
+   (zipmap moves scores)))
 
 (defn- select-minimax-move
-  [board players depth]
+  [board players ]
   (let [player (first players)
-        opponent (second players)
-        moves (get-empty-cells board)
-        scores (map #(score-move (mark-cell board % player) player opponent depth) moves)
-        moves-with-scores (zipmap moves scores)]
-    (best-move player moves-with-scores)))
+        scored-moves (score-moves board players)]
+    (best-move player scored-moves)))
 
 (defn get-computer-move
   [board players]
   (let [depth 0]
     (if (first-move? board)
       (select-first-or-center-cell board)
-      (select-minimax-move board players depth))))
+      (select-minimax-move board players))))

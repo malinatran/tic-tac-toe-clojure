@@ -21,6 +21,10 @@
   [board players]
   (boolean (get-winner board players)))
 
+(defn tie?
+  [board players]
+  (and (board-filled? board) (not (win? board players))))
+
 (defn game-over?
   [board players]
-  (or (board-filled? board) (win? board players)))
+  (or (win? board players) (tie? board players)))

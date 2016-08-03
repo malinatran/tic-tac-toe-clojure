@@ -19,4 +19,3 @@
          (get-human-move board move-message-with-guidelines)))
      (catch Exception e
        (get-human-move board move-message-with-guidelines)))))
-
