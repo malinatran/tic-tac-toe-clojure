@@ -1,5 +1,6 @@
 (ns tic-tac-toe.computer-player
   (:require [tic-tac-toe.board :refer [get-empty-cells
+                                       get-size
                                        mark-cell]]
             [tic-tac-toe.game-state :refer [get-winner
                                             switch-player
@@ -43,18 +44,14 @@
 
 (defn- score-moves
   [board players depth marker]
-   (let [moves (get-empty-cells board)
-         player (first players)
-         scores (map #(memoize-scoring (mark-cell board % (.marker player)) players depth marker) moves)]
-   (zipmap moves scores)))
+  (let [moves (get-empty-cells board)
+        player (first players)
+        scores (map #(memoize-scoring (mark-cell board % (.marker player)) players depth marker) moves)]
+    (zipmap moves scores)))
 
-(defn- select-minimax-move
-  [board players depth marker]
-  (let [player (first players)
+(defn get-minimax-move
+  [board players marker]
+  (let [depth 0
+        player (first players)
         scored-moves (score-moves board players depth marker)]
     (best-move player scored-moves marker)))
-
-(defn get-computer-move
-  [board players marker]
-  (let [depth 0]
-    (select-minimax-move board players depth marker)))

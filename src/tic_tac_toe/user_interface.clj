@@ -1,11 +1,9 @@
 (ns tic-tac-toe.user-interface
-  (:require [tic-tac-toe.board-formatter :refer [add-breaks-and-dividers]]
-            [tic-tac-toe.messages :refer [draw-message
-                                          size-message
-                                          size-message-with-guidelines
-                                          welcome-message
-                                          win-message]]
-            [tic-tac-toe.validator :refer [valid-size?]]))
+  (:require [tic-tac-toe.board :refer [get-length]]
+            [tic-tac-toe.board-formatter :refer [add-breaks-and-dividers
+                                                 translate-move]]
+            [tic-tac-toe.messages :refer :all]
+            [tic-tac-toe.validator :refer :all]))
 
 (defn prompt
   [message]
@@ -38,3 +36,19 @@
    (println draw-message))
   ([result]
    (println (str result win-message))))
+
+(defn get-human-move
+  ([board]
+   (get-human-move board move-message))
+
+  ([board message]
+   (try
+     (print-board board)
+     (let [board board
+           move (Integer/parseInt (prompt message))
+           length (get-length board)]
+       (if (valid-move? board move length)
+         (translate-move move)
+         (get-human-move board move-message-with-guidelines)))
+     (catch Exception e
+       (get-human-move board move-message-with-guidelines)))))

@@ -9,6 +9,9 @@
 
           (before-all
             (def x-marker "X")
+            (def empty-board [nil nil nil
+                              nil nil nil
+                              nil nil nil])
             (def partial-board ["X" nil nil
                                 "O" "X" nil
                                 nil nil nil]))
@@ -50,4 +53,13 @@
                         (should= "X wins!\n" (with-out-str (print-outcome x-marker))))
 
                     (it "displays a message that nobody won if there isn't a win"
-                        (should= "Nobody wins in the game of life - er, I mean, tic-tac-toe.\n" (with-out-str (print-outcome))))))
+                        (should= "Nobody wins in the game of life - er, I mean, tic-tac-toe.\n" (with-out-str (print-outcome)))))
+
+          (describe "make-human-move"
+                    (it "returns move if move provided by user input is valid"
+                        (should= 6
+                                 (with-in-str "7" (get-human-move empty-board))))
+
+                    (it "recursively calls function and prompts for size if size provided by user input is invalid"
+                        (should= 6
+                                 (with-in-str "14\n7" (get-human-move empty-board))))))

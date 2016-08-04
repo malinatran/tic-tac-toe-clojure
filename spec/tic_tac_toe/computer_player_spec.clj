@@ -25,7 +25,7 @@
                     (it "returns false if computer's marker does not match player's marker"
                         (should= false (is-computer? o-player x-marker))))
 
-          (describe "get-computer-move"
+          (describe "get-minimax-move"
                     (it "returns minimax move if computer is not making first move"
                         (with-redefs [best-move (constantly 6)]
-                          (should= 6 (get-computer-move partial-board players x-marker))))))
+                          (should= 6 (get-minimax-move partial-board players x-marker))))))
