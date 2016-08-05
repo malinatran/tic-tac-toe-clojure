@@ -16,11 +16,10 @@ In `src/tic_tac_toe`, you will find the following files/namespaces and correspon
 * `computer_player.clj`: houses minimax algorithm (implements protocol)
 * `game.clj`: is responsible for all events of a game
 * `game_state.clj`: handles logic for state of game and outcome
-* `human_player.clj`: makes human move (implements protocol)
 * `messages.clj`: stores messages for command-line display
 * `player.clj`: a protocol with methods for getting and making moves from players
 * `user_interface.clj`: coordinates command-line printing and prompting for user input
 * `validator.clj`: checks for valid board size and move input by user
 
 #### Organization
-![Diagram](https://s31.postimg.org/q0d33gh57/TTT_Diagram_Clojure.jpg)
+![Diagram](https://s31.postimg.org/5kjpb352z/clojure_TTT_diagram.jpg)
