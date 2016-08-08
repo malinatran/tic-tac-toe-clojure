@@ -80,8 +80,8 @@
           (describe "make-human-move"
                     (it "returns move if move provided by user input is valid"
                         (should= 6
-                                 (with-in-str "7" (get-human-move empty-board))))
+                                 (with-in-str "7" (get-human-move empty-board x-marker))))
 
                     (it "recursively calls function and prompts for size if size provided by user input is invalid"
                         (should= 6
-                                 (with-in-str "14\n7" (get-human-move empty-board))))))
+                                 (with-in-str "14\n7" (get-human-move empty-board x-marker))))))

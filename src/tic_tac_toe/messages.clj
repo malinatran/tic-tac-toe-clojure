@@ -1,19 +1,19 @@
 (ns tic-tac-toe.messages)
 
-(def welcome-message "Welcome to tic-tac-toe!")
+(def welcome "Welcome to tic-tac-toe!")
 
-(def game-type-message "Select (1) for a single-player game or (2) for a two-player game.")
+(def game-type "Select (1) for a single-player game or (2) for a two-player game:")
 
-(def first-player-message "Would you like to go first? (Y/N)")
+(def first-player "Would you like to go first? (Y/N)")
 
-(def size-message "Enter a board size:")
+(def size "Enter a board size:")
 
-(def size-message-with-guidelines "Enter a board size (greater than or equal to 3):")
+(def size-with-guidelines "Enter a board size (greater than or equal to 3):")
 
-(def move-message "Enter your move:")
+(def move "'s turn. Enter your move:")
 
-(def move-message-with-guidelines "Enter your move (must be an available number on the board):")
+(def move-with-guidelines "'s turn. Enter your move (must be an available number on the board):")
 
-(def draw-message "Nobody wins in the game of life - er, I mean, tic-tac-toe.")
+(def draw "Nobody wins in the game of life - er, I mean, tic-tac-toe.")
 
-(def win-message " wins!")
+(def win " wins!")

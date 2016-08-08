@@ -1,8 +1,8 @@
 (ns tic-tac-toe.game-state
-  (:require [tic-tac-toe.board :refer [any-column-filled?
-                                       any-diagonal-filled?
-                                       any-row-filled?
-                                       board-filled?]]))
+  (:require [tic-tac-toe.board :as board :refer [any-column-filled?
+                                                 any-diagonal-filled?
+                                                 any-row-filled?
+                                                 board-filled?]]))
 
 (defn switch-player
   [players player]
@@ -13,9 +13,9 @@
 (defn winner?
   [board player]
   (let [marker (.marker player)]
-    (or (any-row-filled? board marker)
-        (any-column-filled? board marker)
-        (any-diagonal-filled? board marker))))
+    (or (board/any-row-filled? board marker)
+        (board/any-column-filled? board marker)
+        (board/any-diagonal-filled? board marker))))
 
 (defn get-winner
   [board players]
@@ -28,7 +28,7 @@
 
 (defn tie?
   [board players]
-  (and (board-filled? board) (not (win? board players))))
+  (and (board/board-filled? board) (not (win? board players))))
 
 (defn game-over?
   [board players]

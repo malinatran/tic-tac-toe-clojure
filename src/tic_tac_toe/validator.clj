@@ -1,5 +1,5 @@
 (ns tic-tac-toe.validator
-  (:require [tic-tac-toe.board :refer [cell-empty?]]))
+  (:require [tic-tac-toe.board :as board :refer [cell-empty?]]))
 
 (defn greater-than-zero?
   [input]
@@ -15,7 +15,7 @@
 
 (defn available?
   [input board]
-  (cell-empty? board (- input 1)))
+  (board/cell-empty? board (- input 1)))
 
 (defn valid-type?
   [input]
