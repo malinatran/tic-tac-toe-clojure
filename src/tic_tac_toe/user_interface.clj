@@ -3,7 +3,10 @@
             [tic-tac-toe.board-formatter :refer [add-breaks-and-dividers
                                                  translate-move]]
             [tic-tac-toe.messages :refer :all]
-            [tic-tac-toe.validator :refer :all]))
+            [tic-tac-toe.validator :refer [valid-type?
+                                           valid-turn?
+                                           valid-move?
+                                           valid-size?]]))
 
 (defn prompt
   [message]
@@ -14,18 +17,44 @@
   []
   (println welcome-message))
 
+(defn prompt-for-game-type
+  ([]
+   (prompt-for-game-type game-type-message))
+
+  ([message]
+   (try
+     (let [response (Integer/parseInt (prompt message))]
+       (if (valid-type? response)
+         response
+         (prompt-for-game-type game-type-message)))
+     (catch Exception e
+       (prompt-for-game-type game-type-message)))))
+
+(defn prompt-for-first-player
+  ([]
+   (prompt-for-first-player first-player-message))
+
+  ([message]
+   (try
+     (let [turn (prompt message)]
+       (if (valid-turn? turn)
+         turn
+         (prompt-for-first-player first-player-message)))
+     (catch Exception e
+       (prompt-for-first-player first-player-message)))))
+
 (defn prompt-for-size
   ([]
    (prompt-for-size size-message))
 
   ([message]
    (try
-    (let [size (Integer/parseInt (prompt message))]
-      (if (valid-size? size)
-        size
-        (prompt-for-size size-message-with-guidelines)))
-    (catch Exception e
-      (prompt-for-size size-message-with-guidelines)))))
+     (let [size (Integer/parseInt (prompt message))]
+       (if (valid-size? size)
+         size
+         (prompt-for-size size-message-with-guidelines)))
+     (catch Exception e
+       (prompt-for-size size-message-with-guidelines)))))
 
 (defn print-board
   [board]

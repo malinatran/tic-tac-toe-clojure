@@ -5,8 +5,10 @@
                                        board-filled?]]))
 
 (defn switch-player
-  [players]
-  (conj (vec (rest players)) (first players)))
+  [players player]
+  (if (= player (first players))
+    (second players)
+    (first players)))
 
 (defn winner?
   [board player]

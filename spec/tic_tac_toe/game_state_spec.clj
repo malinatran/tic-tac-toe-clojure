@@ -6,11 +6,9 @@
 (describe "game state of tic-tac-toe"
 
           (before-all
-            (def x-marker "X")
-            (def o-marker "O")
-            (def players [(new-computer-player "X") (new-human-player "O")])
-            (def markers-two-elements ["X" "O"])
-            (def markers-three-elements ["O" "X" "M"])
+            (def human-player (new-human-player "O"))
+            (def computer-player (new-computer-player "X"))
+            (def players [computer-player human-player])
             (def partial-board (vec [nil nil "X"
                                      "O" "O" nil
                                      nil nil nil]))
@@ -25,13 +23,11 @@
                                  "O" "X" "O"])))
 
           (describe "switch-player"
-                    (it "returns new collection of two players with players in reverse order"
-                        (let [new-collection ["O" "X"]]
-                          (should= new-collection (switch-player markers-two-elements))))
+                    (it "returns the computer player if current player is human player"
+                        (should= computer-player (switch-player players human-player)))
 
-                    (it "moves the first player of a collection to the end of a collection and returns new collection"
-                        (let [new-collection ["X" "M" "O"]]
-                          (should= new-collection (switch-player markers-three-elements)))))
+                    (it "returns the human player if current player is computer player"
+                        (should= human-player (switch-player players computer-player))))
 
           (describe "winner?"
                     (it "returns true if marker is a winner"

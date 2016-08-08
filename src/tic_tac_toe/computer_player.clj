@@ -3,7 +3,6 @@
                                        get-size
                                        mark-cell]]
             [tic-tac-toe.game-state :refer [get-winner
-                                            switch-player
                                             tie?
                                             win?]]))
 
@@ -12,6 +11,10 @@
 (defn is-computer?
   [player marker]
   (= (.marker player) marker))
+
+(defn- switch-player
+  [players]
+  (conj (vec (rest players)) (first players)))
 
 (defn- calculate-win
   [board players depth marker]

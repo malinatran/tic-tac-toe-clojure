@@ -32,6 +32,28 @@
                         (should= "Welcome to tic-tac-toe!\n"
                                  (with-out-str (display-welcome)))))
 
+          (describe "prompt-for-game-type"
+                    (it "returns response if response provided by user input is valid"
+                        (should= 1
+                                 (with-in-str "1"
+                                   (prompt-for-game-type))))
+
+                    (it "recursively calls functions and prompts for response if user input is invalid"
+                        (should= 2
+                                 (with-in-str "6\n9\n2"
+                                   (prompt-for-game-type)))))
+
+          (describe "prompt-for-first-player"
+                    (it "returns 'Y' if response provided by user input is valid"
+                        (should= "Y"
+                                 (with-in-str "Y"
+                                   (prompt-for-first-player))))
+
+                    (it "recursively calls function and prompts for boolean response to first player if user input is invalid"
+                        (should= "N"
+                                 (with-in-str "Hi\nMalina\nN"
+                                   (prompt-for-first-player)))))
+
           (describe "prompt-for-size"
                     (it "returns size if size provided by user input is valid"
                         (should= 3

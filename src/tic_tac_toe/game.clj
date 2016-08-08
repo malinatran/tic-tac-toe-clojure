@@ -11,6 +11,7 @@
             [tic-tac-toe.user-interface :refer [display-welcome
                                                 print-board
                                                 print-outcome
+                                                prompt-for-first-player
                                                 prompt-for-size]])
   (:gen-class))
 
@@ -21,23 +22,31 @@
     (print-outcome)))
 
 (defn mark-board-with-move
-  [board players]
-  (let [player (first players)
-        move (get-move player board players)]
+  [board players player]
+  (let [move (get-move player board players)]
     (make-move player board move)))
 
 (defn run-game-loop
-  [board players]
+  [board players player]
   (loop [board board
-         players players]
+         players players
+         player player]
     (if (game-over? board players)
       (do (print-board board)
           (announce-outcome board players))
-      (recur (mark-board-with-move board players) (switch-player players)))))
+      (recur (mark-board-with-move board players player) players (switch-player players player)))))
+
+(defn first-player
+  [players turn]
+  (if (= turn "Y")
+    (second players)
+    (first players)))
 
 (defn -main
   []
   (display-welcome)
-  (let [size (prompt-for-size)
-        players [(new-computer-player "X") (new-human-player "O")]]
-    (run-game-loop (create-board size) players)))
+  (let [turn (prompt-for-first-player)
+        size (prompt-for-size)
+        players [(new-computer-player "X") (new-human-player "O")]
+        first-player (first-player players turn)]
+    (run-game-loop (create-board size) players first-player)))

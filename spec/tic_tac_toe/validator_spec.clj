@@ -10,24 +10,42 @@
                         "X" "O" nil
                         nil nil nil]))
 
+          (describe "valid-type?"
+                    (it "returns true if user entered a 1"
+                        (let [input 1]
+                          (should= true (valid-type? input))))
+
+                    (it "returns false if user entered a number besides 1 or 2"
+                        (let [input 20]
+                          (should= false (valid-type? input)))))
+
+          (describe "valid-turn?"
+                    (it "returns true if user entered 'n'"
+                        (let [input "n"]
+                          (should= true (valid-turn? input))))
+
+                    (it "returns false is user entered random letters"
+                        (let [input "Malina"]
+                          (should= false (valid-turn? input)))))
+
           (describe "valid-move?"
                     (it "returns true if user entered a valid move of 3 for a 3x3 board"
-                        (let [move 3]
-                          (should= true (valid-move? board move length))))
+                        (let [input 3]
+                          (should= true (valid-move? board input length))))
 
                     (it "returns false if user entered an invalid move that does not exist on a 3x3 board"
-                        (let [move 10]
-                          (should= false (valid-move? board 10 9))))
+                        (let [input 10]
+                          (should= false (valid-move? board input length))))
 
                     (it "returns false if user entered a move for a cell that is already filled"
-                        (let [move 4]
-                          (should= false (valid-move? board 4 9)))))
+                        (let [input 4]
+                          (should= false (valid-move? board input length)))))
 
           (describe "valid-size?"
                     (it "returns true if user entered a valid board size of 5"
-                        (let [size 5]
-                          (should= true (valid-size? 5))))
+                        (let [input 5]
+                          (should= true (valid-size? input))))
 
                     (it "returns false if user entered an invalid board size less than 3"
-                        (let [size 2]
-                          (should= false (valid-size? 2))))))
+                        (let [input 2]
+                          (should= false (valid-size? input))))))

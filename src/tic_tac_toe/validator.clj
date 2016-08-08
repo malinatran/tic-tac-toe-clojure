@@ -17,6 +17,15 @@
   [input board]
   (cell-empty? board (- input 1)))
 
+(defn valid-type?
+  [input]
+  (or (= input 1) (= input 2)))
+
+(defn valid-turn?
+  [input]
+  (let [input (clojure.string/upper-case input)]
+    (or (= input "Y") (= input "N"))))
+
 (defn valid-move?
   [board input length]
   (and (greater-than-zero? input)
