@@ -9,56 +9,49 @@
 
 (declare score-moves)
 
-(def computer-marker (atom nil))
-
-(defn update-computer-marker
-  [marker]
-  (reset! computer-marker marker))
-
 (defn is-computer?
-  [player]
-  (= (.marker player) @computer-marker))
+  [player marker]
+  (= (.marker player) marker))
 
 (defn- calculate-win
-  [board players depth]
+  [board players depth marker]
   (let [winner (get-winner board players)]
-    (if (is-computer? winner)
+    (if (is-computer? winner marker)
       (- 10 depth)
       (- depth 10))))
 
 (defn- best-move-and-score
-  [player moves]
-  (if (is-computer? player)
+  [player moves marker]
+  (if (is-computer? player marker)
     (apply max-key val moves)
     (apply min-key val moves)))
 
 (defn- best-score
-  [player moves]
-  (val (best-move-and-score player moves)))
+  [player moves marker]
+  (val (best-move-and-score player moves marker)))
 
 (defn best-move
-  [player moves]
-  (key (best-move-and-score player moves)))
+  [player moves marker]
+  (key (best-move-and-score player moves marker)))
 
 (defn- get-score
-  [board players depth]
-  (cond (win? board players) (calculate-win board players depth)
+  [board players depth marker]
+  (cond (win? board players) (calculate-win board players depth marker)
         (tie? board players) 0
-        :else (best-score (second players) (score-moves board (switch-player players) (inc depth)))))
+        :else (best-score (second players) (score-moves board (switch-player players) (inc depth) marker) marker)))
 
 (def memoize-scoring (memoize get-score))
 
 (defn- score-moves
-  [board players depth]
+  [board players depth marker]
   (let [moves (get-empty-cells board)
         player (first players)
-        scores (map #(memoize-scoring (mark-cell board % (.marker player)) players depth) moves)]
+        scores (map #(memoize-scoring (mark-cell board % (.marker player)) players depth marker) moves)]
     (zipmap moves scores)))
 
 (defn get-minimax-move
   [board players marker]
   (let [depth 0
-        marker (update-computer-marker marker)
         player (first players)
-        scored-moves (score-moves board players depth)]
-    (best-move player scored-moves)))
+        scored-moves (score-moves board players depth marker)]
+    (best-move player scored-moves marker)))

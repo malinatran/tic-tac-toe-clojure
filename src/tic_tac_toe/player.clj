@@ -19,7 +19,7 @@
 
 (deftype HumanPlayer [marker]
   Player
-  (get-move [this board players]
+  (get-move [this board _]
     (get-human-move board))
   (make-move [this board move]
     (mark-cell board move marker)))
