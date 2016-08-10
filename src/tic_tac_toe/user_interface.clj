@@ -26,9 +26,9 @@
      (let [response (Integer/parseInt (prompt message))]
        (if (valid-type? response)
          response
-         (prompt-for-game-type message)))
+         (prompt-for-game-type message/game-type-with-guidelines)))
      (catch Exception e
-       (prompt-for-game-type message)))))
+       (prompt-for-game-type message/game-type-with-guidelines)))))
 
 (defn prompt-for-first-player
   ([]
@@ -39,9 +39,9 @@
      (let [turn (prompt message)]
        (if (valid-turn? turn)
          turn
-         (prompt-for-first-player message)))
+         (prompt-for-first-player message/first-player-with-guidelines)))
      (catch Exception e
-       (prompt-for-first-player message)))))
+       (prompt-for-first-player message/first-player-with-guidelines)))))
 
 (defn prompt-for-size
   ([]

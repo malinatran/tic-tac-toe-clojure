@@ -47,22 +47,6 @@
                           (with-redefs [get-move (constantly 6)]
                             (should= board (mark-board-with-move partial-board human-computer-players computer-player-x))))))
 
-          (describe "select-first-player"
-                    (it "returns the human player as the first player if user input is 'Y'"
-                        (should= human-player-o (select-first-player human-computer-players "Y")))
-
-                    (it "returns the computer player as the first player if user input is 'N'"
-                        (should= computer-player-x (select-first-player human-computer-players "N"))))
-
-          (describe "single-player-game?"
-                    (it "returns true if it is a single-player game"
-                        (let [input 1]
-                          (should= true (single-player-game? input))))
-
-                    (it "returns false if it is a two-player game"
-                        (let [input 2]
-                          (should= false (single-player-game? input)))))
-
           (describe "run-game-loop"
                     (it "displays board and announces winner if game is over"
                         (should= "\n |  X  |  O  |  X  | \n |  O  |  X  |  O  | \n |  O  |  O  |  X  | \n\nX wins!\n"
@@ -70,4 +54,34 @@
 
                     (it "displays board and announces draw if game is over"
                         (should= "\n |  X  |  O  |  X  | \n |  X  |  X  |  O  | \n |  O  |  X  |  O  | \n\nNobody wins in the game of life - er, I mean, tic-tac-toe.\n"
-                                 (with-out-str (run-game-loop tie-board human-computer-players computer-player-x))))))
+                                 (with-out-str (run-game-loop tie-board human-computer-players computer-player-x)))))
+
+          (describe "setup-players"
+                    (it "returns a vector with a type of computer player if it is a single-player game"
+                        (let [game-type 1]
+                          (should= (type (new-computer-player "X")) (type (first (setup-players game-type))))
+                          (should= (type (new-human-player "O")) (type (second (setup-players game-type))))))
+
+                    (it "returns a vector with a type of human player if it is a two-player game"
+                        (let [game-type 2]
+                          (should= (type (new-human-player "X")) (type (first (setup-players game-type))))
+                          (should= (type (new-human-player "O")) (type (second (setup-players game-type)))))))
+
+          (describe "setup-player-order"
+                    (it "calls on function to run game loop"
+                        (let [size 3]
+                          (with-in-str "Y"
+                            (should-invoke run-game-loop {} (setup-player-order 3 human-computer-players))))))
+
+          (describe "start"
+                    (it "calls on function to setup game if user selected single-player game"
+                        (with-in-str "1\n3"
+                          (should-invoke setup-player-order {} (start))))
+
+                    (it "calls on function to run game loop if user selected two-player game"
+                        (with-in-str "2\n3"
+                          (should-invoke run-game-loop {} (start)))))
+
+          (describe "main"
+                    (it "calls on function to start game"
+                        (should-invoke start {} (-main)))))

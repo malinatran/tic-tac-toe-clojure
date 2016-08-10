@@ -4,6 +4,16 @@
                                                  any-row-filled?
                                                  board-filled?]]))
 
+(defn single-player-game?
+  [game-type]
+  (= game-type 1))
+
+(defn select-first-player
+  [players turn]
+  (if (= (clojure.string/upper-case turn) "Y")
+    (second players)
+    (first players)))
+
 (defn switch-player
   [players player]
   (if (= player (first players))

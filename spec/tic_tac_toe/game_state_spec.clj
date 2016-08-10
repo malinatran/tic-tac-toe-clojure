@@ -22,6 +22,22 @@
                                  "X" "X" "O"
                                  "O" "X" "O"])))
 
+          (describe "single-player-game?"
+                    (it "returns true if it is a single-player game"
+                        (let [input 1]
+                          (should= true (single-player-game? input))))
+
+                    (it "returns false if it is a two-player game"
+                        (let [input 2]
+                          (should= false (single-player-game? input)))))
+
+          (describe "select-first-player"
+                    (it "returns the human player as the first player if user input is 'Y'"
+                        (should= human-player (select-first-player players "Y")))
+
+                    (it "returns the computer player as the first player if user input is 'N'"
+                        (should= computer-player (select-first-player players "N"))))
+
           (describe "switch-player"
                     (it "returns the computer player if current player is human player"
                         (should= computer-player (switch-player players human-player)))
@@ -59,7 +75,6 @@
 
                     (it "returns false if the game does not have a win"
                         (should= false (tie? partial-board players))))
-
 
           (describe "game-over?"
                     (it "returns true if there is a win"

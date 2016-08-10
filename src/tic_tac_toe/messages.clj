@@ -4,7 +4,11 @@
 
 (def game-type "Select (1) for a single-player game or (2) for a two-player game:")
 
-(def first-player "Would you like to go first? (Y/N)")
+(def game-type-with-guidelines "You can only select 1 or 2:")
+
+(def first-player "Would you like to go first? (Y/N):")
+
+(def first-player-with-guidelines "You can only select Y or N:")
 
 (def size "Enter a board size:")
 
