@@ -1,7 +1,8 @@
 (ns tic-tac-toe.game-spec
   (:require [speclj.core :refer :all]
             [tic-tac-toe.game :refer :all]
-            [tic-tac-toe.player :refer :all]))
+            [tic-tac-toe.player :refer :all]
+            [tic-tac-toe.user-interface :refer [print-goodbye]]))
 
 (describe "tic-tac-toe game"
 
@@ -33,6 +34,17 @@
                         (should= "Nobody wins in the game of life - er, I mean, tic-tac-toe.\n"
                                  (with-out-str (announce-outcome tie-board human-computer-players)))))
 
+          (describe "display-postgame-options"
+                    (it "calls a function to start game if user wants to play again"
+                        (with-in-str "1"
+                          (should-invoke start {}
+                                 (display-postgame-options))))
+
+                    (it "prints a goodbye message"
+                        (with-in-str "2"
+                          (should-invoke print-goodbye {}
+                                 (display-postgame-options)))))
+
           (describe "mark-board-with-move"
                     (it "returns a board with translated cell for human player"
                         (let [board ["O" nil "X"
@@ -49,12 +61,8 @@
 
           (describe "run-game-loop"
                     (it "displays board and announces winner if game is over"
-                        (should= "\n |  X  |  O  |  X  | \n |  O  |  X  |  O  | \n |  O  |  O  |  X  | \n\nX wins!\n"
-                                 (with-out-str (run-game-loop winning-board human-computer-players computer-player-x))))
-
-                    (it "displays board and announces draw if game is over"
-                        (should= "\n |  X  |  O  |  X  | \n |  X  |  X  |  O  | \n |  O  |  X  |  O  | \n\nNobody wins in the game of life - er, I mean, tic-tac-toe.\n"
-                                 (with-out-str (run-game-loop tie-board human-computer-players computer-player-x)))))
+                        (should-invoke display-postgame-options {}
+                                 (with-out-str (run-game-loop winning-board human-computer-players computer-player-x)))))
 
           (describe "setup-players"
                     (it "returns a vector with a type of computer player if it is a single-player game"

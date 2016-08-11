@@ -8,11 +8,16 @@
   [game-type]
   (= game-type 1))
 
+(defn play-again?
+  [option]
+  (= option 1))
+
 (defn select-first-player
   [players turn]
-  (if (= (clojure.string/upper-case turn) "Y")
-    (second players)
-    (first players)))
+  (condp = turn
+    "Y" (second players)
+    "N" (first players)
+    "R" (rand-nth players)))
 
 (defn switch-player
   [players player]

@@ -10,18 +10,18 @@
                         "X" "O" nil
                         nil nil nil]))
 
-          (describe "valid-type?"
+          (describe "valid-selection?"
                     (it "returns true if user entered a 1"
                         (let [input 1]
-                          (should= true (valid-type? input))))
+                          (should= true (valid-selection? input))))
 
                     (it "returns false if user entered a number besides 1 or 2"
                         (let [input 20]
-                          (should= false (valid-type? input)))))
+                          (should= false (valid-selection? input)))))
 
           (describe "valid-turn?"
-                    (it "returns true if user entered 'n'"
-                        (let [input "n"]
+                    (it "returns true if user entered 'N'"
+                        (let [input "N"]
                           (should= true (valid-turn? input))))
 
                     (it "returns false is user entered random letters"

@@ -23,13 +23,22 @@
                                  "O" "X" "O"])))
 
           (describe "single-player-game?"
-                    (it "returns true if it is a single-player game"
+                    (it "returns true if user selected 1"
                         (let [input 1]
                           (should= true (single-player-game? input))))
 
-                    (it "returns false if it is a two-player game"
+                    (it "returns false if user selected 2"
                         (let [input 2]
                           (should= false (single-player-game? input)))))
+
+          (describe "play-again?"
+                    (it "returns true if user selected 1"
+                        (let [input 1]
+                          (should= true (play-again? input))))
+
+                    (it "returns false if user selected 2"
+                        (let [input 2]
+                          (should= false (play-again? input)))))
 
           (describe "select-first-player"
                     (it "returns the human player as the first player if user input is 'Y'"

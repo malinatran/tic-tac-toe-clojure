@@ -3,7 +3,7 @@
             [tic-tac-toe.board-formatter :as formatter :refer [add-breaks-and-dividers
                                                                translate-move]]
             [tic-tac-toe.messages :as message :refer :all]
-            [tic-tac-toe.validator :as validator :refer [valid-type?
+            [tic-tac-toe.validator :as validator :refer [valid-selection?
                                                          valid-turn?
                                                          valid-move?
                                                          valid-size?]]))
@@ -13,48 +13,13 @@
    (println message)
    (read-line)))
 
-(defn display-welcome
+(defn print-welcome
   []
   (println message/welcome))
 
-(defn prompt-for-game-type
-  ([]
-   (prompt-for-game-type message/game-type))
-
-  ([message]
-   (try
-     (let [response (Integer/parseInt (prompt message))]
-       (if (valid-type? response)
-         response
-         (prompt-for-game-type message/game-type-with-guidelines)))
-     (catch Exception e
-       (prompt-for-game-type message/game-type-with-guidelines)))))
-
-(defn prompt-for-first-player
-  ([]
-   (prompt-for-first-player message/first-player))
-
-  ([message]
-   (try
-     (let [turn (prompt message)]
-       (if (valid-turn? turn)
-         turn
-         (prompt-for-first-player message/first-player-with-guidelines)))
-     (catch Exception e
-       (prompt-for-first-player message/first-player-with-guidelines)))))
-
-(defn prompt-for-size
-  ([]
-   (prompt-for-size message/size))
-
-  ([message]
-   (try
-     (let [size (Integer/parseInt (prompt message))]
-       (if (valid-size? size)
-         size
-         (prompt-for-size message/size-with-guidelines)))
-     (catch Exception e
-       (prompt-for-size message/size-with-guidelines)))))
+(defn print-goodbye
+  []
+  (println message/goodbye))
 
 (defn print-board
   [board]
@@ -65,6 +30,62 @@
    (println message/draw))
   ([result]
    (println (str result message/win))))
+
+(defn print-first-player
+  [player]
+  (println (str (.marker player) message/first-player)))
+
+(defn prompt-for-game-type
+  ([]
+   (prompt-for-game-type message/game-type-menu))
+
+  ([message]
+   (try
+     (let [response (Integer/parseInt (prompt message))]
+       (if (valid-selection? response)
+         response
+         (prompt-for-game-type message/selection-guidelines)))
+     (catch Exception e
+       (prompt-for-game-type message/selection-guidelines)))))
+
+(defn prompt-for-first-player
+  ([]
+   (prompt-for-first-player message/first-player-menu))
+
+  ([message]
+   (try
+     (let [turn (clojure.string/upper-case (prompt message))]
+       (if (valid-turn? turn)
+         turn
+         (prompt-for-first-player message/first-player-guidelines)))
+     (catch Exception e
+       (prompt-for-first-player message/first-player-guidelines)))))
+
+(defn prompt-for-size
+  ([]
+   (prompt-for-size message/size))
+
+  ([message]
+   (try
+     (let [size (Integer/parseInt (prompt message))]
+       (if (valid-size? size)
+         size
+         (prompt-for-size message/size-guidelines)))
+     (catch Exception e
+       (prompt-for-size message/size-guidelines)))))
+
+(defn prompt-for-postgame-options
+  ([]
+   (prompt-for-postgame-options message/postgame-menu))
+
+  ([message]
+   (try
+     (let [response (Integer/parseInt (prompt message))]
+       (if (valid-selection? response)
+         response
+         (prompt-for-postgame-options message/selection-guidelines)))
+     (catch Exception e
+       (prompt-for-postgame-options message/selection-guidelines)))))
 
 (defn get-human-move
   ([board marker]
@@ -78,6 +99,6 @@
            length (board/get-length board)]
        (if (valid-move? board move length)
          (formatter/translate-move move)
-         (get-human-move board (str marker message/move-with-guidelines))))
+         (get-human-move board (str marker message/move-guidelines))))
      (catch Exception e
-       (get-human-move board (str marker message/move-with-guidelines))))))
+       (get-human-move board (str marker message/move-guidelines))))))

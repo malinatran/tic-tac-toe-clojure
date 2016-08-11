@@ -1,6 +1,7 @@
 (ns tic-tac-toe.user-interface-spec
   (:require [speclj.core :refer :all]
-            [tic-tac-toe.user-interface :refer :all]))
+            [tic-tac-toe.user-interface :refer :all]
+            [tic-tac-toe.player :refer :all]))
 
 (describe "user interface console"
 
@@ -27,10 +28,32 @@
                                  (with-in-str "Los Angeles"
                                    (prompt "Which city do you live in?")))))
 
-          (describe "display-welcome"
+          (describe "print-welcome"
                     (it "prints welcome message"
                         (should= "Welcome to tic-tac-toe!\n"
-                                 (with-out-str (display-welcome)))))
+                                 (with-out-str (print-welcome)))))
+
+          (describe "print-goodbye"
+                    (it "prints goodbye message"
+                        (should= "Goodbye!\n"
+                                 (with-out-str (print-goodbye)))))
+
+          (describe "print-board"
+                    (it "prints the formatted version of the board"
+                        (let [board "\n |  X  |  2  |  3  | \n |  O  |  X  |  6  | \n |  7  |  8  |  9  | \n\n"]
+                          (should= board (with-out-str (print-board partial-board))))))
+
+          (describe "print-outcome"
+                    (it "displays marker of winner if there is a win"
+                        (should= "X wins!\n" (with-out-str (print-outcome x-marker))))
+
+                    (it "displays a message that nobody won if there isn't a win"
+                        (should= "Nobody wins in the game of life - er, I mean, tic-tac-toe.\n" (with-out-str (print-outcome)))))
+
+          (describe "print-first-player"
+                    (it "displays marker of first player and message"
+                        (let [computer-player-x (new-computer-player "X")]
+                          (should= "X goes first!\n" (with-out-str (print-first-player computer-player-x))))))
 
           (describe "prompt-for-game-type"
                     (it "returns response if response provided by user input is valid"
@@ -65,17 +88,16 @@
                                  (with-in-str "0\n1\n2\n4"
                                    (prompt-for-size)))))
 
-          (describe "print-board"
-                    (it "prints the formatted version of the board"
-                        (let [board "\n |  X  |  2  |  3  | \n |  O  |  X  |  6  | \n |  7  |  8  |  9  | \n\n"]
-                          (should= board (with-out-str (print-board partial-board))))))
+          (describe "prompt-for-postgame-options"
+                    (it "returns response if input is valid"
+                        (should= 2
+                                 (with-in-str "2"
+                                   (prompt-for-postgame-options))))
 
-          (describe "print-outcome"
-                    (it "displays marker of winner if there is a win"
-                        (should= "X wins!\n" (with-out-str (print-outcome x-marker))))
-
-                    (it "displays a message that nobody won if there isn't a win"
-                        (should= "Nobody wins in the game of life - er, I mean, tic-tac-toe.\n" (with-out-str (print-outcome)))))
+                    (it "recursively calls function and prompts for response if user input is invalid"
+                        (should= 1
+                                 (with-in-str "0\n1"
+                                   (prompt-for-postgame-options)))))
 
           (describe "make-human-move"
                     (it "returns move if move provided by user input is valid"
