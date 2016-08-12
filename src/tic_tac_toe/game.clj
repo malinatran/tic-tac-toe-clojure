@@ -10,18 +10,18 @@
 
 (declare start)
 
+(defn display-postgame-menu
+  []
+  (let [option (ui/prompt-for-postgame-option)]
+    (if (play-again? option)
+      (start)
+      (ui/print-goodbye))))
+
 (defn announce-outcome
   [board players]
   (if (state/win? board players)
     (ui/print-outcome (.marker (state/get-winner board players)))
     (ui/print-outcome)))
-
-(defn display-postgame-options
-  []
-  (let [option (ui/prompt-for-postgame-options)]
-    (if (play-again? option)
-      (start)
-      (ui/print-goodbye))))
 
 (defn mark-board-with-move
   [board players player]
@@ -33,12 +33,12 @@
   (if (state/game-over? board players)
     (do (ui/print-board board)
         (announce-outcome board players)
-        (display-postgame-options))
+        (display-postgame-menu))
     (recur (mark-board-with-move board players player) players (state/switch-player players player))))
 
 (defn setup-players
-  [game-type]
-  (if (single-player-game? game-type)
+  [game]
+  (if (single-player-game? game)
     [(player/new-computer-player "X") (player/new-human-player "O")]
     [(player/new-human-player "X") (player/new-human-player "O")]))
 
@@ -51,10 +51,10 @@
 
 (defn start
   []
-  (let [game-type (ui/prompt-for-game-type)
+  (let [game (ui/prompt-for-game-type)
         size (ui/prompt-for-size)
-        players (setup-players game-type)]
-    (if (state/single-player-game? game-type)
+        players (setup-players game)]
+    (if (state/single-player-game? game)
       (setup-player-order size players)
       (run-game-loop (board/create-board size) players (first players)))))
 

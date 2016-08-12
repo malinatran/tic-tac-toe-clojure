@@ -5,8 +5,8 @@
                                                  board-filled?]]))
 
 (defn single-player-game?
-  [game-type]
-  (= game-type 1))
+  [game]
+  (= game 1))
 
 (defn play-again?
   [option]

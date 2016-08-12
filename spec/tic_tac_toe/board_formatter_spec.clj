@@ -26,10 +26,10 @@
                         (let [board ["X" 2 3 "O" "X" 6 7 8 9]]
                           (should= board (replace-nils-with-indexes partial-board)))))
 
-          (describe "add-cell-padding"
+          (describe "add-padding-to-cells"
                     (it "adds padding to indexes and markers"
                         (let [board [ " X " "" "" " O " " X " "" "" "" ""]]
-                          (should= board (add-cell-padding partial-board)))))
+                          (should= board (add-padding-to-cells partial-board)))))
 
           (describe "add-breaks-and-dividers"
                     (it "adds line breaks and pipes for board visualization"

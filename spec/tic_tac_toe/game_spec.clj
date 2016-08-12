@@ -25,6 +25,17 @@
                                  "X" "X" "O"
                                  "O" "X" "O"])))
 
+          (describe "display-postgame-menu"
+                    (it "calls a function to start game if user wants to play again"
+                        (with-in-str "1"
+                          (should-invoke start {}
+                                 (display-postgame-menu))))
+
+                    (it "prints a goodbye message"
+                        (with-in-str "2"
+                          (should-invoke print-goodbye {}
+                                 (display-postgame-menu)))))
+
           (describe "announce-outcome"
                     (it "prints a message about the marker that won"
                         (should= "X wins!\n"
@@ -33,17 +44,6 @@
                     (it "prints a message about a draw if there is no win"
                         (should= "Nobody wins in the game of life - er, I mean, tic-tac-toe.\n"
                                  (with-out-str (announce-outcome tie-board human-computer-players)))))
-
-          (describe "display-postgame-options"
-                    (it "calls a function to start game if user wants to play again"
-                        (with-in-str "1"
-                          (should-invoke start {}
-                                 (display-postgame-options))))
-
-                    (it "prints a goodbye message"
-                        (with-in-str "2"
-                          (should-invoke print-goodbye {}
-                                 (display-postgame-options)))))
 
           (describe "mark-board-with-move"
                     (it "returns a board with translated cell for human player"
@@ -61,19 +61,19 @@
 
           (describe "run-game-loop"
                     (it "displays board and announces winner if game is over"
-                        (should-invoke display-postgame-options {}
+                        (should-invoke display-postgame-menu {}
                                  (with-out-str (run-game-loop winning-board human-computer-players computer-player-x)))))
 
           (describe "setup-players"
                     (it "returns a vector with a type of computer player if it is a single-player game"
-                        (let [game-type 1]
-                          (should= (type (new-computer-player "X")) (type (first (setup-players game-type))))
-                          (should= (type (new-human-player "O")) (type (second (setup-players game-type))))))
+                        (let [game 1]
+                          (should= (type (new-computer-player "X")) (type (first (setup-players game))))
+                          (should= (type (new-human-player "O")) (type (second (setup-players game))))))
 
                     (it "returns a vector with a type of human player if it is a two-player game"
-                        (let [game-type 2]
-                          (should= (type (new-human-player "X")) (type (first (setup-players game-type))))
-                          (should= (type (new-human-player "O")) (type (second (setup-players game-type)))))))
+                        (let [game 2]
+                          (should= (type (new-human-player "X")) (type (first (setup-players game))))
+                          (should= (type (new-human-player "O")) (type (second (setup-players game)))))))
 
           (describe "setup-player-order"
                     (it "calls on function to run game loop"

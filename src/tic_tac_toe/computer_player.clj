@@ -7,7 +7,7 @@
 
 (declare score-moves)
 
-(defn is-computer?
+(defn- is-computer?
   [player marker]
   (= (.marker player) marker))
 

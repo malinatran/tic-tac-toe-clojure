@@ -7,6 +7,11 @@
                                                          valid-turn?
                                                          valid-move?
                                                          valid-size?]]))
+(declare prompt-for-game-type
+         prompt-for-postgame-option
+         prompt-for-first-player
+         prompt-for-size
+         get-human-move)
 
 (defn prompt
   ([message]
@@ -35,70 +40,100 @@
   [player]
   (println (str (.marker player) message/first-player)))
 
-(defn prompt-for-game-type
-  ([]
-   (prompt-for-game-type message/game-type-menu))
+; Game type
+(defn- get-valid-game-type
+  [message]
+  (let [response (Integer/parseInt (prompt message))]
+    (if (valid-selection? response)
+      response
+      (prompt-for-game-type message/selection-guidelines))))
 
-  ([message]
-   (try
-     (let [response (Integer/parseInt (prompt message))]
-       (if (valid-selection? response)
-         response
-         (prompt-for-game-type message/selection-guidelines)))
-     (catch Exception e
-       (prompt-for-game-type message/selection-guidelines)))))
+(defn- run-game-type-loop
+  [message]
+  (try
+    (get-valid-game-type message)
+    (catch Exception e
+      (prompt-for-game-type message/selection-guidelines))))
+
+(defn prompt-for-game-type
+  ([] (prompt-for-game-type message/game-type-menu))
+  ([message] (run-game-type-loop message)))
+
+; First player
+(defn- get-valid-first-player
+  [message]
+  (let [response (clojure.string/upper-case (prompt message))]
+    (if (valid-turn? response)
+      response
+      (prompt-for-first-player message/first-player-guidelines))))
+
+(defn- run-first-player-loop
+  [message]
+  (try
+    (get-valid-first-player message)
+    (catch Exception e
+      (prompt-for-first-player message/first-player-guidelines))))
 
 (defn prompt-for-first-player
-  ([]
-   (prompt-for-first-player message/first-player-menu))
+  ([] (prompt-for-first-player message/first-player-menu))
+  ([message] (run-first-player-loop message)))
 
-  ([message]
-   (try
-     (let [turn (clojure.string/upper-case (prompt message))]
-       (if (valid-turn? turn)
-         turn
-         (prompt-for-first-player message/first-player-guidelines)))
-     (catch Exception e
-       (prompt-for-first-player message/first-player-guidelines)))))
+; Size
+(defn- get-valid-size
+  [message]
+  (let [response (Integer/parseInt (prompt message))]
+    (if (valid-size? response)
+      response
+      (prompt-for-size message/size-guidelines))))
+
+(defn- run-size-loop
+  [message]
+  (try
+    (get-valid-size message)
+    (catch Exception e
+      (prompt-for-size message/size-guidelines))))
 
 (defn prompt-for-size
-  ([]
-   (prompt-for-size message/size))
+  ([] (prompt-for-size message/size))
+  ([message] (run-size-loop message)))
 
-  ([message]
-   (try
-     (let [size (Integer/parseInt (prompt message))]
-       (if (valid-size? size)
-         size
-         (prompt-for-size message/size-guidelines)))
+; Postgame option
+(defn- get-valid-postgame-option
+  [message]
+  (let [response (Integer/parseInt (prompt message))]
+    (if (valid-selection? response)
+      response
+      (prompt-for-postgame-option message/selection-guidelines))))
+
+(defn- run-postgame-loop
+  [message]
+  (try
+    (get-valid-postgame-option message)
+    (catch Exception e
+      (prompt-for-postgame-option message/selection-guidelines))))
+
+(defn prompt-for-postgame-option
+  ([] (prompt-for-postgame-option message/postgame-menu))
+  ([message] (run-postgame-loop message)))
+
+; Move
+(defn- get-valid-move
+  [board marker message]
+  (let [board board
+        move (Integer/parseInt (prompt (str marker message)))
+        length (board/get-length board)]
+    (if (valid-move? board move length)
+      (formatter/translate-move move)
+      (get-human-move board marker message/move-guidelines))))
+
+(defn- run-move-loop
+  [board marker message]
+  (try
+     (print-board board)
+     (get-valid-move board marker message)
      (catch Exception e
-       (prompt-for-size message/size-guidelines)))))
-
-(defn prompt-for-postgame-options
-  ([]
-   (prompt-for-postgame-options message/postgame-menu))
-
-  ([message]
-   (try
-     (let [response (Integer/parseInt (prompt message))]
-       (if (valid-selection? response)
-         response
-         (prompt-for-postgame-options message/selection-guidelines)))
-     (catch Exception e
-       (prompt-for-postgame-options message/selection-guidelines)))))
+       (get-human-move board marker message/move-guidelines))))
 
 (defn get-human-move
-  ([board marker]
-   (get-human-move board marker message/move))
-
-  ([board marker message]
-   (try
-     (print-board board)
-     (let [board board
-           move (Integer/parseInt (prompt (str marker message)))
-           length (board/get-length board)]
-       (if (valid-move? board move length)
-         (formatter/translate-move move)
-         (get-human-move board (str marker message/move-guidelines))))
-     (catch Exception e
-       (get-human-move board (str marker message/move-guidelines))))))
+  ([board marker] (get-human-move board marker message/move))
+  ([board marker message] (run-move-loop board marker message)))

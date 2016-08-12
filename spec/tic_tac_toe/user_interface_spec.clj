@@ -88,16 +88,16 @@
                                  (with-in-str "0\n1\n2\n4"
                                    (prompt-for-size)))))
 
-          (describe "prompt-for-postgame-options"
+          (describe "prompt-for-postgame-option"
                     (it "returns response if input is valid"
                         (should= 2
                                  (with-in-str "2"
-                                   (prompt-for-postgame-options))))
+                                   (prompt-for-postgame-option))))
 
                     (it "recursively calls function and prompts for response if user input is invalid"
                         (should= 1
                                  (with-in-str "0\n1"
-                                   (prompt-for-postgame-options)))))
+                                   (prompt-for-postgame-option)))))
 
           (describe "make-human-move"
                     (it "returns move if move provided by user input is valid"

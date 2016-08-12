@@ -1,6 +1,6 @@
 (ns tic-tac-toe.board-formatter)
 
-(defn- padding
+(defn- add-padding-to-cell
   [cell]
   (let [digit (count (str cell))]
   (cond (= digit 1) (str " " cell " ")
@@ -18,13 +18,13 @@
                    (+ index 1)
                    cell)) board))
 
-(defn add-cell-padding
+(defn add-padding-to-cells
   [board]
-  (map #(padding %) board))
+  (map #(add-padding-to-cell %) board))
 
 (defn add-breaks-and-dividers
   [board]
   (let [size (int (java.lang.Math/sqrt (count board)))
         indexed-board (replace-nils-with-indexes board)
-        formatted-board (add-cell-padding indexed-board)]
+        formatted-board (add-padding-to-cells indexed-board)]
     (clojure.string/join " | " (cons "\n" (concat (apply concat (interpose ["\n"] (partition size formatted-board))) "\n")))))
