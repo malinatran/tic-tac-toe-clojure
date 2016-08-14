@@ -15,35 +15,42 @@
 (defn select-first-player
   [players turn]
   (condp = turn
-    "Y" (second players)
-    "N" (first players)
-    "R" (rand-nth players)))
+    1 (second players)
+    2 (first players)
+    3 (rand-nth players)))
 
 (defn switch-player
-  [players player]
-  (if (= player (first players))
-    (second players)
-    (first players)))
+  ([players]
+   (conj (vec (rest players)) (first players)))
+
+  ([players player]
+   (if (= player (first players))
+     (second players)
+     (first players))))
 
 (defn winner?
-  [board player]
-  (let [marker (.marker player)]
-    (or (board/any-row-filled? board marker)
-        (board/any-column-filled? board marker)
-        (board/any-diagonal-filled? board marker))))
+  [board marker]
+  (or (board/any-row-filled? board marker)
+      (board/any-column-filled? board marker)
+      (board/any-diagonal-filled? board marker)))
 
 (defn get-winner
-  [board players]
-  (first (filter (fn [player]
-                   (winner? board player)) players)))
+  [board players & [minimax]]
+  (if minimax
+    (first (filter #(winner? board %) players))
+    (first (filter #(winner? board (.marker %)) players))))
 
 (defn win?
-  [board players]
-  (boolean (get-winner board players)))
+  [board players & [minimax]]
+  (if minimax
+    (boolean (get-winner board players minimax))
+    (boolean (get-winner board players))))
 
 (defn tie?
-  [board players]
-  (and (board/board-filled? board) (not (win? board players))))
+  [board players & [minimax]]
+  (if minimax
+    (and (board/board-filled? board) (not (win? board players minimax)))
+    (and (board/board-filled? board) (not (win? board players)))))
 
 (defn game-over?
   [board players]

@@ -8,6 +8,8 @@
           (before-all
             (def human-player (new-human-player "O"))
             (def computer-player (new-computer-player "X"))
+            (def x-marker "X")
+            (def o-marker "O")
             (def players [computer-player human-player])
             (def partial-board (vec [nil nil "X"
                                      "O" "O" nil
@@ -41,25 +43,30 @@
                           (should= false (play-again? input)))))
 
           (describe "select-first-player"
-                    (it "returns the human player as the first player if user input is 'Y'"
-                        (should= human-player (select-first-player players "Y")))
+                    (it "returns the human player as the first player if user selected 1"
+                        (let [input 1]
+                          (should= human-player (select-first-player players input))))
 
-                    (it "returns the computer player as the first player if user input is 'N'"
-                        (should= computer-player (select-first-player players "N"))))
+                    (it "returns the computer player as the first player if user input is 2"
+                        (let [input 2]
+                          (should= computer-player (select-first-player players input)))))
 
           (describe "switch-player"
                     (it "returns the computer player if current player is human player"
                         (should= computer-player (switch-player players human-player)))
 
                     (it "returns the human player if current player is computer player"
-                        (should= human-player (switch-player players computer-player))))
+                        (should= human-player (switch-player players computer-player)))
+
+                    (it "returns a vector with switched player markers if there is only argument"
+                        (should= ["O" "X"] (switch-player ["X" "O"]))))
 
           (describe "winner?"
                     (it "returns true if marker is a winner"
-                        (should= true (winner? winning-board-full (first players))))
+                        (should= true (winner? winning-board-full x-marker)))
 
                     (it "returns false if marker is not a winner"
-                        (should= false (winner? winning-board-full (second players)))))
+                        (should= false (winner? winning-board-full o-marker))))
 
           (describe "get-winner"
                     (it "returns the winner of a full board"

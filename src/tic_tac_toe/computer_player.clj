@@ -1,30 +1,27 @@
 (ns tic-tac-toe.computer-player
-  (:require [tic-tac-toe.board :as board :refer [get-empty-cells
-                                                 mark-cell]]
-            [tic-tac-toe.game-state :as state :refer [get-winner
-                                                      tie?
-                                                      win?]]))
+  (:require [tic-tac-toe.board :as board :refer :all]
+            [tic-tac-toe.game-state :as state :refer :all]))
 
 (declare score-moves)
 
-(defn- is-computer?
-  [player marker]
-  (= (.marker player) marker))
+(def opponent "O")
+(def depth 0)
+(def score 10)
 
-(defn- switch-player
-  [players]
-  (conj (vec (rest players)) (first players)))
+(defn- computer?
+  [player marker]
+  (= player marker))
 
 (defn- calculate-win
-  [board players depth marker]
-  (let [winner (state/get-winner board players)]
-    (if (is-computer? winner marker)
-      (- 10 depth)
-      (- depth 10))))
+  [board players marker depth]
+  (let [winner (state/get-winner board players true)]
+    (if (computer? winner marker)
+      (- score depth)
+      (- depth score))))
 
 (defn- best-move-and-score
   [player moves marker]
-  (if (is-computer? player marker)
+  (if (computer? player marker)
     (apply max-key val moves)
     (apply min-key val moves)))
 
@@ -37,23 +34,23 @@
   (key (best-move-and-score player moves marker)))
 
 (defn- get-score
-  [board players depth marker]
-  (cond (state/win? board players) (calculate-win board players depth marker)
-        (state/tie? board players) 0
-        :else (best-score (second players) (score-moves board (switch-player players) (inc depth) marker) marker)))
+  [board players marker depth]
+  (cond (state/win? board players true) (calculate-win board players marker depth)
+        (state/tie? board players true) 0
+        :else (best-score (second players) (score-moves board (state/switch-player players) marker (inc depth)) marker)))
 
 (def memoize-scoring (memoize get-score))
 
 (defn- score-moves
-  [board players depth marker]
+  [board players marker depth]
   (let [moves (board/get-empty-cells board)
         player (first players)
-        scores (map #(memoize-scoring (board/mark-cell board % (.marker player)) players depth marker) moves)]
+        scores (map #(memoize-scoring (board/mark-cell board % player) players marker depth) moves)]
     (zipmap moves scores)))
 
 (defn get-minimax-move
-  [board players marker]
-  (let [depth 0
+  [board marker]
+  (let [players (vector marker opponent)
         player (first players)
-        scored-moves (score-moves board players depth marker)]
+        scored-moves (score-moves board players marker depth)]
     (best-move player scored-moves marker)))

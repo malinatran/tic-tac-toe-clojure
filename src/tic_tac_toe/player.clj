@@ -1,16 +1,16 @@
 (ns tic-tac-toe.player
   (:require [tic-tac-toe.board :as board :refer [mark-cell]]
             [tic-tac-toe.computer-player :as computer :refer [get-minimax-move]]
-            [tic-tac-toe.user-interface :as ui :refer [get-human-move]]))
+            [tic-tac-toe.game-setup :as setup :refer [get-human-move]]))
 
 (defprotocol Player
-  (get-move [this board players])
+  (get-move [this board])
   (make-move [this board move]))
 
 (deftype ComputerPlayer [marker]
   Player
-  (get-move [this board players]
-    (computer/get-minimax-move board players marker))
+  (get-move [this board]
+    (computer/get-minimax-move board marker))
   (make-move [this board move]
     (board/mark-cell board move marker)))
 
@@ -19,8 +19,8 @@
 
 (deftype HumanPlayer [marker]
   Player
-  (get-move [this board players]
-    (ui/get-human-move board marker))
+  (get-move [this board]
+    (setup/get-human-move board marker))
   (make-move [this board move]
     (board/mark-cell board move marker)))
 

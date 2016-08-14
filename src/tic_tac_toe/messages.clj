@@ -10,14 +10,14 @@
 (def selection-guidelines "You can only select 1 or 2:")
 
 (def first-player-menu "Would you like to go first?
-Select (Y) for yes
-       (N) for no
-       (R) for randomly determining who goes first:")
+Select (1) for yes
+       (2) for no
+       (3) for randomly determining who goes first:")
 
 (def postgame-menu "Select (1) to play a new game
        (2) to exit forever:")
 
-(def first-player-guidelines "You can only select Y, N, or R:")
+(def first-player-guidelines "You can only select 1, 2, or 3:")
 
 (def size "Enter a board size:")
 

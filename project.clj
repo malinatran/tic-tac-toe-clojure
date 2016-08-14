@@ -7,4 +7,4 @@
   :profiles {:dev {:dependencies [[speclj "3.3.1"]]}}
   :plugins [[speclj "3.3.1"]]
   :test-paths ["spec"]
-  :main tic-tac-toe.game)
+  :main tic-tac-toe.play)

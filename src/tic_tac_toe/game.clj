@@ -1,21 +1,23 @@
 (ns tic-tac-toe.game
   (:require [tic-tac-toe.board :as board :refer [create-board]]
             [tic-tac-toe.game-state :as state :refer :all]
+            [tic-tac-toe.game-setup :as setup :refer :all]
             [tic-tac-toe.player :as player :refer [get-move
                                                    make-move
                                                    new-computer-player
                                                    new-human-player]]
-            [tic-tac-toe.user-interface :as ui :refer :all])
-  (:gen-class))
+            [tic-tac-toe.user-interface :as ui :refer :all]))
 
-(declare start)
+(declare setup-game)
 
-(defn display-postgame-menu
+(defn say-goodbye
   []
-  (let [option (ui/prompt-for-postgame-option)]
-    (if (play-again? option)
-      (start)
-      (ui/print-goodbye))))
+  (ui/print-goodbye))
+
+(defn choose-to-play-again
+  []
+  (let [option (setup/prompt-for-postgame-option)]
+    (play-again? option)))
 
 (defn announce-outcome
   [board players]
@@ -25,15 +27,14 @@
 
 (defn mark-board-with-move
   [board players player]
-  (let [move (player/get-move player board players)]
+  (let [move (player/get-move player board)]
     (player/make-move player board move)))
 
 (defn run-game-loop
   [board players player]
   (if (state/game-over? board players)
     (do (ui/print-board board)
-        (announce-outcome board players)
-        (display-postgame-menu))
+        (announce-outcome board players))
     (recur (mark-board-with-move board players player) players (state/switch-player players player))))
 
 (defn setup-players
@@ -44,21 +45,17 @@
 
 (defn setup-player-order
   [size players]
-  (let [turn (ui/prompt-for-first-player)
+  (let [turn (setup/prompt-for-first-player)
         first-player (state/select-first-player players turn)]
     (ui/print-first-player first-player)
-    (run-game-loop (board/create-board size) players first-player)))
+    [(board/create-board size) players first-player]))
 
-(defn start
+(defn setup-game
   []
-  (let [game (ui/prompt-for-game-type)
-        size (ui/prompt-for-size)
+  (ui/print-welcome)
+  (let [game (setup/prompt-for-game-type)
+        size (setup/prompt-for-size)
         players (setup-players game)]
     (if (state/single-player-game? game)
       (setup-player-order size players)
-      (run-game-loop (board/create-board size) players (first players)))))
-
-(defn -main
-  []
-  (ui/print-welcome)
-  (start))
+      [(board/create-board size) players (first players)])))

@@ -12,14 +12,16 @@ Install [Leiningen](http://leiningen.org/). To run the game, enter `lein run`. T
 In `src/tic_tac_toe`, you will find the following files/namespaces and corresponding spec files in `spec/tic_tac_toe`:
 
 * `board.clj`: has functionalities related to the grid and cells
-* `board_formatter.clj`: handles all board formatting for command-line display
-* `computer_player.clj`: houses minimax algorithm (implements protocol)
+* `board_formatter.clj`: handles board formatting for command-line display
+* `computer_player.clj`: houses minimax algorithm
 * `game.clj`: is responsible for all events of a game
+* `game_setup.clj`: prompts user for game options
 * `game_state.clj`: handles logic for state of game and outcome
 * `messages.clj`: stores messages for command-line display
+* `play.clj`: is the entry point
 * `player.clj`: a protocol with methods for getting and making moves from players
-* `user_interface.clj`: coordinates command-line printing and prompting for user input
-* `validator.clj`: checks for valid board size and move input by user
+* `user_interface.clj`: coordinates command-line printing
+* `validator.clj`: checks for valid user input
 
 #### Organization
-![Diagram](https://s31.postimg.org/5kjpb352z/clojure_TTT_diagram.jpg)
+![Diagram](https://s3.postimg.io/e50ay6cr7/clojure_ns_diagram.jpg)

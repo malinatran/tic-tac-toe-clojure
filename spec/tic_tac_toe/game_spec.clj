@@ -15,6 +15,9 @@
             (def human-player-o (new-human-player "O"))
             (def human-computer-players [computer-player-x human-player-o])
             (def human-players [human-player-x human-player-o])
+            (def empty-board (vec [nil nil nil
+                                   nil nil nil
+                                   nil nil nil]))
             (def partial-board (vec [nil nil "X"
                                      "O" "O" nil
                                      nil nil nil]))
@@ -25,16 +28,14 @@
                                  "X" "X" "O"
                                  "O" "X" "O"])))
 
-          (describe "display-postgame-menu"
-                    (it "calls a function to start game if user wants to play again"
+          (describe "choose-to-play-again"
+                    (it "calls a function to setup game if user wants to play again"
                         (with-in-str "1"
-                          (should-invoke start {}
-                                 (display-postgame-menu))))
+                          (should= true (choose-to-play-again))))
 
                     (it "prints a goodbye message"
                         (with-in-str "2"
-                          (should-invoke print-goodbye {}
-                                 (display-postgame-menu)))))
+                          (should= false (choose-to-play-again)))))
 
           (describe "announce-outcome"
                     (it "prints a message about the marker that won"
@@ -61,7 +62,7 @@
 
           (describe "run-game-loop"
                     (it "displays board and announces winner if game is over"
-                        (should-invoke display-postgame-menu {}
+                        (should-invoke announce-outcome {}
                                  (with-out-str (run-game-loop winning-board human-computer-players computer-player-x)))))
 
           (describe "setup-players"
@@ -76,20 +77,13 @@
                           (should= (type (new-human-player "O")) (type (second (setup-players game)))))))
 
           (describe "setup-player-order"
-                    (it "calls on function to run game loop"
+                    (it "returns a vector with board, players, and first player"
                         (let [size 3]
-                          (with-in-str "Y"
-                            (should-invoke run-game-loop {} (setup-player-order 3 human-computer-players))))))
+                          (with-in-str "1"
+                            (should= [empty-board human-computer-players (second human-computer-players)]
+                                     (setup-player-order size human-computer-players))))))
 
-          (describe "start"
+          (describe "setup-game"
                     (it "calls on function to setup game if user selected single-player game"
                         (with-in-str "1\n3"
-                          (should-invoke setup-player-order {} (start))))
-
-                    (it "calls on function to run game loop if user selected two-player game"
-                        (with-in-str "2\n3"
-                          (should-invoke run-game-loop {} (start)))))
-
-          (describe "main"
-                    (it "calls on function to start game"
-                        (should-invoke start {} (-main)))))
+                          (should-invoke setup-player-order {} (setup-game))))))

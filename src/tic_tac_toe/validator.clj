@@ -23,9 +23,7 @@
 
 (defn valid-turn?
   [input]
-  (or (= input "Y")
-      (= input "N")
-      (= input "R")))
+  (or (= input 1) (= input 2) (= input 3)))
 
 (defn valid-move?
   [board input length]

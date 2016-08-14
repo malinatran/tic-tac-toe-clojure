@@ -11,7 +11,7 @@
                         nil nil nil]))
 
           (describe "valid-selection?"
-                    (it "returns true if user entered a 1"
+                    (it "returns true if user entered  1"
                         (let [input 1]
                           (should= true (valid-selection? input))))
 
@@ -20,12 +20,12 @@
                           (should= false (valid-selection? input)))))
 
           (describe "valid-turn?"
-                    (it "returns true if user entered 'N'"
-                        (let [input "N"]
+                    (it "returns true if user entered 1"
+                        (let [input 1]
                           (should= true (valid-turn? input))))
 
-                    (it "returns false is user entered random letters"
-                        (let [input "Malina"]
+                    (it "returns false is user entered a number besides 1, 2, or 3"
+                        (let [input 6]
                           (should= false (valid-turn? input)))))
 
           (describe "valid-move?"
