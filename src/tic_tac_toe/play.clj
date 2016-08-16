@@ -1,25 +1,25 @@
 (ns tic-tac-toe.play
-  (:require [tic-tac-toe.game :as game :refer [choose-to-play-again
+  (:require [tic-tac-toe.game :as game :refer [choose-to-play-again?
                                                run-game-loop
                                                say-goodbye
                                                setup-game]])
   (:gen-class))
 
-(declare start)
+(declare start-game)
 
-(defn end
+(defn end-game
   []
-  (if (choose-to-play-again)
-    (start)
-    (say-goodbye)))
+  (if (game/choose-to-play-again?)
+    (start-game)
+    (game/say-goodbye)))
 
-(defn start
+(defn start-game
   []
-  (let [[board players player] (setup-game)]
-    (run-game-loop board players player)
-    (end)))
+  (let [[board players player] (game/setup-game)]
+    (game/run-game-loop board players player)
+    (end-game)))
 
 (defn -main
   []
-  (start))
+  (start-game))
 

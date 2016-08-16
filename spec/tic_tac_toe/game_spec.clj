@@ -28,14 +28,14 @@
                                  "X" "X" "O"
                                  "O" "X" "O"])))
 
-          (describe "choose-to-play-again"
+          (describe "choose-to-play-again?"
                     (it "calls a function to setup game if user wants to play again"
                         (with-in-str "1"
-                          (should= true (choose-to-play-again))))
+                          (should= true (choose-to-play-again?))))
 
                     (it "prints a goodbye message"
                         (with-in-str "2"
-                          (should= false (choose-to-play-again)))))
+                          (should= false (choose-to-play-again?)))))
 
           (describe "announce-outcome"
                     (it "prints a message about the marker that won"

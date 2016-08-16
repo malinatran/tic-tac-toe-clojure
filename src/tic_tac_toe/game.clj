@@ -14,9 +14,9 @@
   []
   (ui/print-goodbye))
 
-(defn choose-to-play-again
+(defn choose-to-play-again?
   []
-  (let [option (setup/prompt-for-postgame-option)]
+  (let [option (setup/get-options {:option :postgame-option})]
     (play-again? option)))
 
 (defn announce-outcome
@@ -45,7 +45,7 @@
 
 (defn setup-player-order
   [size players]
-  (let [turn (setup/prompt-for-first-player)
+  (let [turn (setup/get-options {:option :first-player})
         first-player (state/select-first-player players turn)]
     (ui/print-first-player first-player)
     [(board/create-board size) players first-player]))
@@ -53,8 +53,8 @@
 (defn setup-game
   []
   (ui/print-welcome)
-  (let [game (setup/prompt-for-game-type)
-        size (setup/prompt-for-size)
+  (let [game (setup/get-options {:option :game-type})
+        size (setup/get-options {:option :size})
         players (setup-players game)]
     (if (state/single-player-game? game)
       (setup-player-order size players)

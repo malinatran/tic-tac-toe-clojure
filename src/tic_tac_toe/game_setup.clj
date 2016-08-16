@@ -9,52 +9,63 @@
                                                          valid-size?]]))
 (declare get-human-move)
 
-(defn- get-valid-response
+(defn get-valid-input
   [first-message second-message validation function]
-  (let [response (Integer/parseInt (ui/prompt first-message))]
-    (if (validation response)
-      response
+  (let [input (Integer/parseInt (ui/prompt first-message))]
+    (if (validation input)
+      input
       (function second-message))))
-
-(defn run-loop
-  [first-message second-message validation function]
-  (try
-    (get-valid-response first-message second-message validation function)
-    (catch Exception e
-      (function second-message))))
-
-(defn prompt-for-game-type
-  ([] (prompt-for-game-type message/game-type-menu))
-  ([message] (run-loop message message/selection-guidelines valid-selection? prompt-for-game-type)))
-
-(defn prompt-for-first-player
-  ([] (prompt-for-first-player message/first-player-menu))
-  ([message] (run-loop message message/first-player-guidelines valid-turn? prompt-for-first-player)))
-
-(defn prompt-for-size
-  ([] (prompt-for-size message/size))
-  ([message] (run-loop message message/size-guidelines valid-size? prompt-for-size)))
-
-(defn prompt-for-postgame-option
-  ([] (prompt-for-postgame-option message/postgame-menu))
-  ([message] (run-loop message message/selection-guidelines valid-selection? prompt-for-postgame-option)))
 
 (defn- get-valid-move
   [board marker message]
+  (ui/print-board board)
   (let [move (Integer/parseInt (ui/prompt (str marker message)))
         length (count board)]
-    (if (valid-move? board move length)
+    (if (validator/valid-move? board move length)
       (formatter/translate-move move)
       (get-human-move board marker message/move-guidelines))))
 
-(defn- run-move-loop
-  [board marker message]
+(defn run-loop
+  [first-message second-message validation function & [board marker]]
   (try
-    (ui/print-board board)
-    (get-valid-move board marker message)
+    (if board
+      (validation board marker first-message)
+      (get-valid-input first-message second-message validation function))
     (catch Exception e
-      (get-human-move board marker message/move-guidelines))))
+      (function second-message))))
+
+(defmulti get-options :option)
+
+(defn get-game-type
+  [message]
+  (run-loop message message/selection-guidelines validator/valid-selection? get-game-type))
+
+(defmethod get-options :game-type
+  [_] (get-game-type message/game-type-menu))
+
+(defn get-first-player
+  [message]
+  (run-loop message message/first-player-guidelines validator/valid-turn? get-first-player))
+
+(defmethod get-options :first-player
+  [_] (get-first-player message/first-player-menu))
+
+(defn get-size
+  [message]
+  (run-loop message message/size-guidelines validator/valid-size? get-size))
+
+(defmethod get-options :size
+  [_] (get-size message/size))
+
+(defn get-postgame-option
+  [message]
+  (run-loop message message/selection-guidelines validator/valid-selection? get-postgame-option))
+
+(defmethod get-options :postgame-option
+  [_] (get-postgame-option message/postgame-menu))
 
 (defn get-human-move
-  ([board marker] (get-human-move board marker message/move))
-  ([board marker message] (run-move-loop board marker message)))
+  ([board marker]
+   (get-human-move board marker message/move))
+  ([board marker message]
+   (run-loop message message/move-guidelines get-valid-move get-human-move board marker)))

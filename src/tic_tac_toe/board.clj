@@ -44,9 +44,8 @@
 
 (defn filled-with-marker?
   [cells marker]
-  (reduce
-    (fn [acc cell]
-      (and acc (= marker cell))) true cells))
+  (reduce (fn [acc cell]
+            (and acc (= marker cell))) true cells))
 
 (defn- get-rows
   [board size]
@@ -74,28 +73,24 @@
   (let [length (get-length board)
         cell-indexes (vec (range length))
         forward-inc (- (get-size board) 1)]
-    (filter (fn [index]
-              (and (not (= index 0))
-                   (not (= index (- length 1)))
-                   (= (mod index forward-inc) 0))) cell-indexes)))
+    (filter #(and (not (= % 0))
+                  (not (= % (- length 1)))
+                  (= (mod % forward-inc) 0)) cell-indexes)))
 
 (defn- get-backward-diagonal-indexes
   [board]
   (let [cell-indexes (vec (range (get-length board)))
         backward-inc (+ (get-size board) 1)]
-    (filter (fn [index]
-              (= (mod index backward-inc) 0)) cell-indexes)))
+    (filter #(= (mod % backward-inc) 0) cell-indexes)))
 
 (defn- get-diagonals
   [board size]
   (let [forward-diagonal (get-forward-diagonal-indexes board)
         backward-diagonal (get-backward-diagonal-indexes board)
         diagonal-indexes (vector forward-diagonal backward-diagonal)]
-
     (map (fn [diagonal]
            (map (fn [index]
-                       (nth board index)) diagonal))
-           diagonal-indexes)))
+                  (nth board index)) diagonal)) diagonal-indexes)))
 
 (defn any-diagonal-filled?
   [board marker]

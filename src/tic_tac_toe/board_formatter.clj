@@ -3,9 +3,10 @@
 (defn- add-padding-to-cell
   [cell]
   (let [digit (count (str cell))]
-  (cond (= digit 1) (str " " cell " ")
-        (= digit 2) (str " " cell)
-        :else (str cell))))
+    (condp = digit
+      1 (str " " cell " ")
+      2 (str " " cell)
+      (str cell))))
 
 (defn translate-move
   [move]
