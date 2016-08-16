@@ -35,23 +35,17 @@
       (board/any-diagonal-filled? board marker)))
 
 (defn get-winner
-  [board players & [minimax]]
-  (if minimax
-    (first (filter #(winner? board %) players))
-    (first (filter #(winner? board (.marker %)) players))))
+  [board markers]
+  (first (filter #(winner? board %) markers)))
 
 (defn win?
-  [board players & [minimax]]
-  (if minimax
-    (boolean (get-winner board players minimax))
-    (boolean (get-winner board players))))
+  [board markers]
+  (boolean (get-winner board markers)))
 
 (defn tie?
-  [board players & [minimax]]
-  (if minimax
-    (and (board/board-filled? board) (not (win? board players minimax)))
-    (and (board/board-filled? board) (not (win? board players)))))
+  [board markers]
+  (and (board/board-filled? board) (not (win? board markers))))
 
 (defn game-over?
-  [board players]
-  (or (win? board players) (tie? board players)))
+  [board markers]
+  (or (win? board markers) (tie? board markers)))

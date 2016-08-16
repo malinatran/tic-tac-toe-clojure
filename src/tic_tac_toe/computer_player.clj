@@ -14,7 +14,7 @@
 
 (defn- calculate-win
   [board players marker depth]
-  (let [winner (state/get-winner board players true)]
+  (let [winner (state/get-winner board players)]
     (if (computer? winner marker)
       (- score depth)
       (- depth score))))
@@ -35,8 +35,8 @@
 
 (defn- get-score
   [board players marker depth]
-  (cond (state/win? board players true) (calculate-win board players marker depth)
-        (state/tie? board players true) 0
+  (cond (state/win? board players) (calculate-win board players marker depth)
+        (state/tie? board players) 0
         :else (best-score (second players) (score-moves board (state/switch-player players) marker (inc depth)) marker)))
 
 (def memoize-scoring (memoize get-score))

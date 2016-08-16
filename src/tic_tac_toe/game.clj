@@ -10,6 +10,9 @@
 
 (declare setup-game)
 
+(def x-marker "X")
+(def o-marker "O")
+
 (defn say-goodbye
   []
   (ui/print-goodbye))
@@ -19,11 +22,16 @@
   (let [option (setup/get-options {:option :postgame-option})]
     (play-again? option)))
 
+(defn- get-markers
+  [players]
+  (map #(.marker %) players))
+
 (defn announce-outcome
   [board players]
-  (if (state/win? board players)
-    (ui/print-outcome (.marker (state/get-winner board players)))
-    (ui/print-outcome)))
+  (let [markers (get-markers players)]
+    (if (state/win? board markers)
+      (ui/print-outcome (state/get-winner board markers))
+      (ui/print-outcome))))
 
 (defn mark-board-with-move
   [board players player]
@@ -32,16 +40,17 @@
 
 (defn run-game-loop
   [board players player]
-  (if (state/game-over? board players)
+  (let [markers (get-markers players)]
+  (if (state/game-over? board markers)
     (do (ui/print-board board)
         (announce-outcome board players))
-    (recur (mark-board-with-move board players player) players (state/switch-player players player))))
+    (recur (mark-board-with-move board players player) players (state/switch-player players player)))))
 
 (defn setup-players
   [game]
   (if (single-player-game? game)
-    [(player/new-computer-player "X") (player/new-human-player "O")]
-    [(player/new-human-player "X") (player/new-human-player "O")]))
+    [(player/new-computer-player x-marker) (player/new-human-player o-marker)]
+    [(player/new-human-player x-marker) (player/new-human-player o-marker)]))
 
 (defn setup-player-order
   [size players]

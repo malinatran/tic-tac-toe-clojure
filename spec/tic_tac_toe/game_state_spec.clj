@@ -10,6 +10,7 @@
             (def computer-player (new-computer-player "X"))
             (def x-marker "X")
             (def o-marker "O")
+            (def markers ["X" "O"])
             (def players [computer-player human-player])
             (def partial-board (vec [nil nil "X"
                                      "O" "O" nil
@@ -70,34 +71,34 @@
 
           (describe "get-winner"
                     (it "returns the winner of a full board"
-                        (should= (first players) (get-winner winning-board-full players)))
+                        (should= "X" (get-winner winning-board-full markers)))
 
                     (it "returns the winner of a partial board"
-                        (should= (first players) (get-winner winning-board-partial players)))
+                        (should= "X" (get-winner winning-board-partial markers)))
 
                     (it "returns nil if there is no winner"
-                        (should= nil (get-winner tie-board players))))
+                        (should= nil (get-winner tie-board markers))))
 
           (describe "win?"
                     (it "returns true if the game has a win"
-                        (should= true (win? winning-board-full players)))
+                        (should= true (win? winning-board-full markers)))
 
                     (it "returns false if the game does not have a win"
-                        (should= false (win? partial-board players))))
+                        (should= false (win? partial-board markers))))
 
           (describe "tie?"
                     (it "returns true if the game has a draw"
-                        (should= true (tie? tie-board players)))
+                        (should= true (tie? tie-board markers)))
 
                     (it "returns false if the game does not have a win"
-                        (should= false (tie? partial-board players))))
+                        (should= false (tie? partial-board markers))))
 
           (describe "game-over?"
                     (it "returns true if there is a win"
-                        (should= true (game-over? winning-board-full players)))
+                        (should= true (game-over? winning-board-full markers)))
 
                     (it "returns true if there is a draw"
-                        (should= true (game-over? tie-board players)))
+                        (should= true (game-over? tie-board markers)))
 
                     (it "returns false if there is not a win or draw"
-                        (should= false (game-over? partial-board players)))))
+                        (should= false (game-over? partial-board markers)))))

@@ -28,11 +28,13 @@
 (defn run-loop
   [first-message second-message validation function & [board marker]]
   (try
-    (if board
+    (if marker
       (validation board marker first-message)
       (get-valid-input first-message second-message validation function))
     (catch Exception e
-      (function second-message))))
+      (if marker
+        (function board marker second-message)
+        (function second-message)))))
 
 (defmulti get-options :option)
 
